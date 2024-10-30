@@ -2,26 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+ion-card {
+  border-radius: 12px;
+}
+ion-button {
+  margin: 0;
+}
+ion-button:not(.button-small) {
+  --border-radius: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  min-height: 2.75rem !important;
+  height: 2.75rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* CUSTOM CSS */
+.scroll-horizontal {
+  scrollbar-width: none; /* Oculta a barra de rolagem */
+  -ms-overflow-style: none; /* Para Internet Explorer e Edge */
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
