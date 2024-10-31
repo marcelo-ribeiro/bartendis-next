@@ -1,22 +1,17 @@
+// "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-async-client-component */
 
+import CallBartenderButton from "@/app/components/CallBartenderButton";
+import { Product } from "@/app/components/Product";
+import {
+  getDocumentIdBySlug,
+  getMenu,
+  getStores,
+  loadStore,
+} from "@/app/services/store";
 import Image from "next/image";
-// import Lottie from "react-lottie";
-// import animationData from "../assets/lotties/check.json";
-import CallBartenderButton from "../../components/CallBartenderButton";
-import { Product } from "../../components/Product";
-import { getDocumentIdBySlug, getMenu, loadStore } from "../../services/store";
 import "../style.css";
-
-// const defaultOptions = {
-//   loop: true,
-//   autoplay: true,
-//   animationData: animationData,
-//   rendererSettings: {
-//     preserveAspectRatio: "xMidYMid slice",
-//   },
-// };
 
 export default async function Cardapio({
   searchParams,
@@ -25,48 +20,11 @@ export default async function Cardapio({
   searchParams: { slot: string };
   params: { slug: string };
 }) {
-  console.log("searchParams :", searchParams);
-  console.log("params :", params);
-  // const [present, dismiss] = useIonLoading();
-  const slug = params.slug;
-  // const slot = searchParams.slot;
-
+  const { slug } = params;
+  const { slot } = searchParams;
   const storeId = await getDocumentIdBySlug(slug);
-  console.log("storeId :", storeId);
   const store = await loadStore(storeId!);
-  console.log("store :", store);
   const menu = await getMenu(storeId!);
-  console.log("menu :", menu);
-
-  // getStoreId(slug!).then(async (storeId) => {
-  //   if (!storeId) return;
-  //   store = await loadStore(storeId);
-  //   console.log("store :", store);
-  //   menu = await getMenu(storeId);
-  //   console.log("menu :", menu);
-  // });
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const { generateOrder } = useStore(slug!);
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const showSuccess = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const lastOrderProduct = useRef<any>();
-
-  // useEffect(() => {
-  //   async function init() {
-  //     if (!menu || !Object.keys(menu).length) {
-  //       present({
-  //         message: "Carregando o cardápio...",
-  //         duration: 3000,
-  //       });
-  //     }
-  //   }
-  //   init();
-  //   return () => {
-  //     dismiss();
-  //   };
-  // }, [dismiss, menu, present]);
 
   return (
     <main>
@@ -84,8 +42,6 @@ export default async function Cardapio({
                 alt="Prime Delicatessen"
                 src="/logotipo-prime-delicatessen.jpeg"
                 className="object-contain"
-                // width={300}
-                // height={112}
                 priority={true}
                 fill={true}
               />
@@ -117,7 +73,7 @@ export default async function Cardapio({
                         <div key={product.id}>
                           <Product
                             product={product}
-                            searchParams={searchParams}
+                            searchParams={{ slug, slot }}
                             storeId={storeId!}
                           />
                         </div>
@@ -134,34 +90,12 @@ export default async function Cardapio({
           <CallBartenderButton searchParams={searchParams} storeId={storeId!} />
         </nav>
       </footer>
-
-      <div
-        className="fixed inset-0 z-50 grid place-items-center place-content-center bg-white/90 transition-opacity duration-1000"
-        style={{
-          opacity: showSuccess ? 1 : 0,
-          pointerEvents: showSuccess ? "auto" : "none",
-        }}
-      >
-        {showSuccess && (
-          <>
-            {/* <Lottie options={defaultOptions} width={340} height={340} /> */}
-            <div className="mt-4 text-black text-2xl font-bold text-center">
-              <span color="success">Seu pedido foi realizado!</span>
-              <br />
-              {/* {lastOrderProduct.current.quantity
-                  ? lastOrderProduct.current.quantity + "x "
-                  : ""}
-                {lastOrderProduct.current.productName} */}
-            </div>
-          </>
-        )}
-      </div>
     </main>
   );
 }
 
-// export async function generateStaticParams() {
-//   const stores = await getStores();
-//   console.log("stores :", stores);
-//   return stores.map((product) => ({ slug: product.slug }));
-// }
+export async function generateStaticParams() {
+  const stores = await getStores();
+  const storesIds = stores.map(({ slug }) => ({ slug }));
+  return storesIds;
+}

@@ -4,6 +4,7 @@ import { firebaseFirestore } from "../libraries/firebase";
 export async function getDocumentIdBySlug(slug: string) {
   // Create a reference to the collection
   const collectionRef = collection(firebaseFirestore, "stores");
+  console.log("collectionRef :", collectionRef);
 
   // Query the collection for documents where the 'slug' field matches the given slug
   const q = query(collectionRef, where("slug", "==", slug));

@@ -1,4 +1,4 @@
-import { getApp, getApps, initializeApp } from "firebase/app";
+import { FirebaseOptions, getApp, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -12,8 +12,16 @@ const firebaseConfig = {
   measurementId: "G-8LS456GTVM",
 };
 
-// export const firebaseApp = initializeApp(firebaseConfig);
-const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+function createFirebaseApp(config: FirebaseOptions) {
+  try {
+    return getApp();
+  } catch {
+    return initializeApp(config);
+  }
+}
+
+export const firebaseApp = createFirebaseApp(firebaseConfig);
+// const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 console.log("firebaseApp :", firebaseApp);
 
 export const firebaseFirestore = getFirestore(firebaseApp);

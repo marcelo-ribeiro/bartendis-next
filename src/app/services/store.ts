@@ -130,19 +130,15 @@ export async function generateOrder({
 }
 
 export async function getDocumentIdBySlug(slug: string) {
-  console.log("slug :", slug);
   // Create a reference to the collection
   const collectionRef = collection(firebaseFirestore, "stores");
-  getDocs(collectionRef).then((docs) => {
-    console.log("docs :", docs);
-  });
+
   // Query the collection for documents where the 'slug' field matches the given slug
   const q = query(collectionRef, where("slug", "==", slug));
 
   try {
     // Execute the query
     const querySnapshot = await getDocs(q);
-    console.log("querySnapshot :", querySnapshot);
 
     // Check if any documents were returned
     if (!querySnapshot.empty) {

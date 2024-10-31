@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { generateOrder } from "@/app/services/store";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { TProduct } from "../../hooks/useStore";
 import { Button } from "../Button";
@@ -22,21 +22,23 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
   const [quantity, setQuantity] = useState(0);
   // const [presentAlert] = useIonAlert();
 
-  const handleGenerateOrder = async (order: any) => {
-    console.log("order :", order);
-    try {
-      // lastOrderProduct.current = order;
-      await generateOrder(order);
-      // setShowSuccess(true);
-      setTimeout(() => {
-        // setShowSuccess(false);
-      }, 4000);
-    } catch {
-      alert(
-        "Ocorreu um erro ao gerar o seu pedido. Contate o suporte do estabelecimento."
-      );
-    }
+  const order = {
+    storeId,
+    slotName: slot!,
+    productName: `${product.name} - ${product.description}`,
+    quantity,
   };
+
+  // const handleGenerateOrder = async (order: any) => {
+  //   try {
+  //     await generateOrder(order);
+  //     setTimeout(() => {}, 4000);
+  //   } catch {
+  //     alert(
+  //       "Ocorreu um erro ao gerar o seu pedido. Contate o suporte do estabelecimento."
+  //     );
+  //   }
+  // };
 
   const handleCounterChange = (value: number) => {
     console.log("value :", value);
@@ -46,21 +48,26 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
   const handleSetOrder = () => {
     if (quantity === 0) {
       alert("Escolha a quantidade para fazer o pedido.");
-      return;
+      return false;
     }
-    handleGenerateOrder({
-      storeId,
-      slotName: slot!,
-      productName: `${product.name} - ${product.description}`,
-      quantity,
-    });
-    setQuantity(0);
+    // try {
+    //   // handleGenerateOrder(order);
+    //   setQuantity(0);
+    //   const url = new URL(location.href);
+    //   url.searchParams.set("product", order.productName);
+    //   url.searchParams.set("quantity", String(order.quantity));
+    //   url.pathname = url.pathname + "/success";
+    //   window.open(url, "_self");
+    //   // history.pushState(null, "", url);
+    // } catch {
+    //   alert("Houve um erro para fazer o pedido. Tente novamente.");
+    // }
   };
 
   return (
     <article className="card overflow-hidden rounded-xl bg-white shadow-md">
       <div
-        className={`card__image w-full aspect-video relative ${
+        className={`card__image w-full aspect-video ${
           product.image ? "#fff" : "bg-slate-50"
         }`}
       >
@@ -69,7 +76,8 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
             className="w-full h-full object-contain"
             alt={product.name}
             src={product.image}
-            fill={true}
+            width={160}
+            height={90}
           />
         )}
       </div>
@@ -94,9 +102,20 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
             onCounterChange={handleCounterChange}
             counter={quantity}
           />
-          <Button primary onClick={handleSetOrder}>
-            Fazer pedido
-          </Button>
+          {quantity <= 0 ? (
+            <Button variant="primary" onClick={handleSetOrder}>
+              Fazer pedido
+            </Button>
+          ) : (
+            <Link
+              href={`${location.origin}/${
+                location.pathname
+              }/success/?${new URLSearchParams(order as any).toString()}`}
+              className="grid"
+            >
+              <Button variant="primary">Fazer pedido</Button>
+            </Link>
+          )}
         </footer>
       )}
     </article>
