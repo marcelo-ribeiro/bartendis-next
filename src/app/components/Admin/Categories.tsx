@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, useIonRouter } from "@ionic/react";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { firebaseFirestore } from "../../libraries/firebase";
+import { Button } from "../Button";
 
 type CategoryProps = { id: string; name: string };
 
@@ -10,7 +10,7 @@ export const Categories = () => {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const [newCategory, setNewCategory] = useState("");
   const searchParams = new URLSearchParams(location.search); // Pegar o ID da loja e categoria da URL
-  const router = useIonRouter(); // Usado para navegação entre páginas
+  // const router = useIonRouter(); // Usado para navegação entre páginas
   const storeId = searchParams.get("storeId");
   const categoryId = searchParams.get("categoryId");
 
@@ -40,7 +40,7 @@ export const Categories = () => {
   };
 
   const redirect = (id: string) => {
-    router.push(`/admin/produtos/?storeId=${storeId}&categoryId=${id}`); // Redirecionar para a nova categoria
+    location.href = `/admin/produtos/?storeId=${storeId}&categoryId=${id}`; // Redirecionar para a nova categoria
   };
 
   // Função para cadastrar uma nova categoria e redirecionar para sua URL
@@ -86,9 +86,9 @@ export const Categories = () => {
           placeholder="Digite a categoria"
           className="px-2 py-1 border border-slate-300 rounded-lg"
         />
-        <IonButton color="success" size="small" onClick={handleAddCategory}>
+        <Button variant="primary" size="sm" onClick={handleAddCategory}>
           Adicionar
-        </IonButton>
+        </Button>
       </div>
     </div>
   );

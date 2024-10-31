@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { IonButton, IonContent, IonPage } from "@ionic/react";
 import {
   addDoc,
   collection,
@@ -265,8 +264,8 @@ const ProductTable = () => {
   };
 
   return (
-    <IonPage>
-      <IonContent>
+    <main>
+      <section>
         <div className="px-8 pt-8 pb-4">
           <h1 className="text-3xl font-semibold">Produtos</h1>
         </div>
@@ -297,9 +296,9 @@ const ProductTable = () => {
                 </td>
                 <td className="px-3 py-2 border border-y-slate-200">
                   <div className="relative flex gap-2 justify-center items-center">
-                    <IonButton color="light" size="small">
+                    <Button color="light" size="small">
                       Escolher imagem
-                    </IonButton>
+                    </Button>
                     <input
                       className="absolute inset-0 opacity-0"
                       type="file"
@@ -328,14 +327,14 @@ const ProductTable = () => {
                   </div>
                 </td>
                 <td className="px-4 py-2 border border-y-slate-200 text-center">
-                  <IonButton
+                  <Button
                     type="submit"
-                    color="success"
-                    size="small"
+                    variant="primary"
+                    size="sm"
                     onClick={handleAddProduct}
                   >
                     Adicionar produto
-                  </IonButton>
+                  </Button>
                 </td>
               </tr>
 
@@ -360,19 +359,19 @@ const ProductTable = () => {
                           src={product.image}
                           alt={product.name}
                         />
-                        <IonButton
-                          color="light"
-                          size="small"
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => handleRemoveImage(index)}
                         >
                           Remover
-                        </IonButton>
+                        </Button>
                       </div>
                     ) : (
                       <div className="relative flex gap-2 justify-center items-center">
-                        <IonButton color="light" size="small">
+                        <Button color="outline" size="sm">
                           Escolher imagem
-                        </IonButton>
+                        </Button>
                         <input
                           className="absolute inset-0 opacity-0"
                           type="file"
@@ -403,20 +402,20 @@ const ProductTable = () => {
                   </td>
                   <td className="px-4 py-2 border border-y-slate-200 text-center">
                     <div className="flex gap-2 justify-center">
-                      <IonButton
-                        size="small"
-                        color="light"
+                      <Button
+                        size="sm"
+                        color="outline"
                         onClick={() => handleUpdateProduct(index)}
                       >
                         Salvar Produto
-                      </IonButton>
-                      <IonButton
-                        size="small"
-                        color="light"
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="outline"
                         onClick={() => handleRemoveProduct(index)}
                       >
                         Excluir Produto
-                      </IonButton>
+                      </Button>
                     </div>
                   </td>
                 </tr>
@@ -424,8 +423,8 @@ const ProductTable = () => {
             </tbody>
           </table>
         </div>
-      </IonContent>
-    </IonPage>
+      </section>
+    </main>
   );
 };
 
