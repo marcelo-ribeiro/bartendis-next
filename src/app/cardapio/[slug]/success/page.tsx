@@ -1,17 +1,16 @@
 // "use client";
 
-import animationData from "@/app/assets/lotties/check.json";
 import { Button } from "@/app/components/Button";
 import { generateOrder } from "@/app/services/store";
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-  },
-};
+// const defaultOptions = {
+//   loop: true,
+//   autoplay: true,
+//   animationData,
+//   rendererSettings: {
+//     preserveAspectRatio: "xMidYMid slice",
+//   },
+// };
 
 export default async function Success({
   searchParams,
