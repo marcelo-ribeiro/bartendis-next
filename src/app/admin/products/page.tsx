@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { Button } from "@/app/components/Button";
 import {
   addDoc,
   collection,
@@ -296,7 +297,7 @@ const ProductTable = () => {
                 </td>
                 <td className="px-3 py-2 border border-y-slate-200">
                   <div className="relative flex gap-2 justify-center items-center">
-                    <Button color="light" size="small">
+                    <Button color="light" size="sm">
                       Escolher imagem
                     </Button>
                     <input
