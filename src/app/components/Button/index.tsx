@@ -33,7 +33,7 @@ export const Button = ({
       case "accent":
         return "bg-green-500 text-white hover:bg-green-600";
       case "outline":
-        return "border-2 border-stone-200 text-gray-500 hover:bg-gray-100";
+        return "border border-neutral-300 text-neutral-900 hover:bg-neutral-100";
       case "clear":
       default:
         return "bg-gray-500 text-white hover:bg-gray-600";

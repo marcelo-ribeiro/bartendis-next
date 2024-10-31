@@ -102,28 +102,28 @@ export async function getMenu(storeId: string | null) {
 }
 
 export async function generateOrder({
-  storeId,
-  slotName,
-  productName,
+  store,
+  slot,
+  product,
   quantity,
 }: {
-  storeId: string;
-  slotName: string;
-  productName: string;
+  store: string;
+  slot: string;
+  product: string;
   quantity?: number;
 }) {
-  if (!storeId) return;
+  if (!store) return;
 
   const ordersCollection = collection(
     firebaseFirestore,
     `stores`,
-    storeId,
+    store,
     "orders"
   );
   const docOptions: any = {
     created: serverTimestamp(),
-    slotName,
-    productName,
+    slot,
+    product,
   };
   if (quantity) docOptions.quantity = quantity;
   await addDoc(ordersCollection, docOptions);

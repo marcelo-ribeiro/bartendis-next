@@ -6,20 +6,20 @@ export default async function Success({
   searchParams,
 }: {
   searchParams: {
-    storeId: string;
-    productName: string;
-    slotName: string;
+    store: string;
+    product: string;
+    slot: string;
     quantity: string;
   };
 }) {
-  const { storeId, slotName, productName, quantity } = searchParams;
+  const { store, slot, product, quantity } = searchParams;
   let hasSuccess = false;
 
   try {
     await generateOrder({
-      storeId,
-      slotName,
-      productName,
+      store,
+      slot,
+      product,
       quantity: Number(quantity),
     });
     hasSuccess = true;
@@ -28,7 +28,7 @@ export default async function Success({
   }
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center place-content-center bg-white/90 transition-opacity duration-1000">
+    <div className="absolute inset-0 z-50 grid place-items-center place-content-center bg-white/90 transition-opacity duration-1000">
       <LottieAnimation />
 
       {hasSuccess && (
@@ -36,7 +36,7 @@ export default async function Success({
           <span color="success">Seu pedido foi realizado!</span>
           <br />
           {quantity ? quantity + "x " : ""}
-          {productName}
+          {product}
         </div>
       )}
 

@@ -23,15 +23,15 @@ export const QuantityCounter = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 mx-2 rounded-md overflow-hidden">
+    <div className="grid grid-cols-3 gap-2 rounded-md overflow-hidden">
       <Button size="sm" variant="outline" onClick={decrement}>
-        <Image src={RemoveOutline} alt="adicionar" />
+        <Image src={RemoveOutline} alt="adicionar" width={24} height={24} />
       </Button>
-      <div className="flex items-center justify-center text-center text-sm rounded-lg bg-stone-100 font-medium">
+      <div className="flex items-center justify-center text-center text-sm rounded-lg bg-neutral-100 font-medium">
         {counter}
       </div>
       <Button size="sm" variant="outline" onClick={increment}>
-        <Image src={AddOutline} alt="adicionar" />
+        <Image src={AddOutline} alt="adicionar" width={24} height={24} />
       </Button>
     </div>
   );
