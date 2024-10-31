@@ -1,19 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import {
-  IonButton,
-  IonCard,
-  IonContent,
-  IonPage,
-  IonSelect,
-  IonSelectOption,
-  IonText,
-  IonTitle,
-} from "@ionic/react";
-// import "@ionic/react/css/palettes/dark.system.css";
-import { useEffect, useMemo, useRef, useState } from "react";
-// import { useLocation } from "react-router";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "../components/Button";
 import { useOrders } from "../hooks/useOrders";
 import { useStore } from "../hooks/useStore";
 import "./style.css";
@@ -91,25 +80,25 @@ const Orders: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <main>
       {/* <IonHeader>
         <IonToolbar>
           <IonTitle>{store?.name} - Pedidos</IonTitle>
         </IonToolbar>
       </IonHeader> */}
 
-      <IonContent fullscreen style={{ "--ion-background-color": "#eee" }}>
+      <section className="bg-slate-100">
         <header className="grid grid-flow-col auto-cols-auto justify-between">
-          <IonTitle size="large">{store?.name} - Pedidos</IonTitle>
+          <h1>{store?.name} - Pedidos</h1>
           <div className=" grid grid-flow-col w-full">
             <div className="grid grid-flow-col gap-2 items-center px-4">
               <span>Filtrar por:</span>
-              <IonSelect value={searchFilter} onIonChange={handleSelect}>
-                <IonSelectOption value="">Todas mesas</IonSelectOption>
-                <IonSelectOption value="mesa-1">Mesa 1</IonSelectOption>
-                <IonSelectOption value="mesa-2">Mesa 2</IonSelectOption>
-                <IonSelectOption value="mesa-3">Mesa 3</IonSelectOption>
-              </IonSelect>
+              <select value={searchFilter} onChange={handleSelect}>
+                <option value="">Todas mesas</option>
+                <option value="mesa-1">Mesa 1</option>
+                <option value="mesa-2">Mesa 2</option>
+                <option value="mesa-3">Mesa 3</option>
+              </select>
             </div>
             <div className="grid grid-flow-col gap-2 items-center px-4">
               <span>
@@ -118,9 +107,9 @@ const Orders: React.FC = () => {
                   ? new Date(store.openAt.toMillis()!).toLocaleString()
                   : ""}
               </span>
-              <IonButton fill="solid" color="success" onClick={handleOpenSells}>
+              <Button variant="primary" onClick={handleOpenSells}>
                 Abrir o caixa
-              </IonButton>
+              </Button>
             </div>
           </div>
         </header>
@@ -128,7 +117,7 @@ const Orders: React.FC = () => {
         <section className={hasNewOrder ? "new-order" : ""}>
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3q gap-8 w-full p-8">
             {filteredOrders?.map((order, index) => (
-              <IonCard
+              <article
                 key={order.id}
                 className={`grid gap-4 m-0 text-center p-6 place-content-center ${getStatusColor(
                   order.status
@@ -136,51 +125,45 @@ const Orders: React.FC = () => {
               >
                 <div className="grid grid-flow-col gap-2 items-center">
                   <span>Status do pedido</span>
-                  <IonSelect
+                  <select
                     value={order.status ?? orderStatus.pendent}
-                    onIonChange={(event) =>
-                      handleSelectStatus(order.id, event.detail.value)
+                    onChange={(event) =>
+                      handleSelectStatus(order.id, event.target.value)
                     }
                   >
                     {Object.entries(orderStatus).map(([key, value]) => (
-                      <IonSelectOption key={key} value={value}>
+                      <option key={key} value={value}>
                         {value}
-                      </IonSelectOption>
+                      </option>
                     ))}
-                  </IonSelect>
+                  </select>
                 </div>
-                <IonText
-                  color="medium"
-                  className="text-xl opacity-70 uppercase"
-                >
+                <div color="medium" className="text-xl opacity-70 uppercase">
                   Pedido #{filteredOrders.length - index}
                   <br />
                   <b>{new Date(order.created).toLocaleString()}</b>
-                </IonText>
+                </div>
                 <hr />
-                <IonText
-                  color="danger"
-                  className="text-2xl font-bold uppercase"
-                >
+                <div color="danger" className="text-2xl font-bold uppercase">
                   {order.slotName?.replace("-", " ")}
-                </IonText>
-                <IonText color="dark" className="text-3xl font-bold opacity-90">
+                </div>
+                <div color="dark" className="text-3xl font-bold opacity-90">
                   {order.productName}
-                </IonText>
+                </div>
                 {!!order.quantity && (
-                  <IonText
+                  <div
                     color="dark"
                     className="text-2xl font-bold uppercase opacity-70"
                   >
                     QTD: {order.quantity}x
-                  </IonText>
+                  </div>
                 )}
-              </IonCard>
+              </article>
             ))}
           </section>
         </section>
-      </IonContent>
-    </IonPage>
+      </section>
+    </main>
   );
 };
 
