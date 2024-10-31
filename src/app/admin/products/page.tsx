@@ -18,13 +18,12 @@ import {
   uploadBytes,
 } from "firebase/storage"; // Adicionar funções de storage
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Categories } from "../../components/Admin/Categories";
 import { TProduct } from "../../hooks/useStore";
 import { firebaseFirestore, firebaseStorage } from "../../libraries/firebase";
 
-const ProductTable = () => {
+export default function ProductTable({ searchParams }: any) {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [newProduct, setNewProduct] = useState<TProduct>({
     name: "",
@@ -36,9 +35,8 @@ const ProductTable = () => {
   const [newImageFile, setNewImageFile] = useState<any>(null); // Para armazenar o arquivo de imagem para novo produto
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editingImageFile, setEditingImageFile] = useState<any[]>([]); // Para armazenar novos arquivos de imagem ao editar
-  const searchParams = useSearchParams();
-  const storeId = searchParams.get("storeId");
-  const categoryId = searchParams.get("categoryId");
+  const storeId = searchParams.storeId;
+  const categoryId = searchParams.categoryId;
 
   // Função para carregar os produtos da Firestore
   useEffect(() => {
@@ -427,6 +425,4 @@ const ProductTable = () => {
       </section>
     </main>
   );
-};
-
-export default ProductTable;
+}
