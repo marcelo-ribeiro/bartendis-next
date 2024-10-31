@@ -102,22 +102,22 @@ export async function getMenu(storeId: string | null) {
 }
 
 export async function generateOrder({
-  store,
+  storeId,
   slot,
   product,
   quantity,
 }: {
-  store: string;
+  storeId: string;
   slot: string;
   product: string;
   quantity?: number;
 }) {
-  if (!store) return;
+  if (!storeId) return;
 
   const ordersCollection = collection(
     firebaseFirestore,
     `stores`,
-    store,
+    storeId,
     "orders"
   );
   const docOptions: any = {

@@ -6,18 +6,18 @@ export default async function Success({
   searchParams,
 }: {
   searchParams: {
-    store: string;
+    storeId: string;
     product: string;
     slot: string;
     quantity: string;
   };
 }) {
-  const { store, slot, product, quantity } = searchParams;
+  const { storeId, slot, product, quantity } = searchParams;
   let hasSuccess = false;
 
   try {
     await generateOrder({
-      store,
+      storeId,
       slot,
       product,
       quantity: Number(quantity),

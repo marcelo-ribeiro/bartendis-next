@@ -20,8 +20,8 @@ export default function CallBartenderButton({
   const handleGenerateOrder = async () => {
     const order = {
       storeId,
-      slotName: slot!,
-      productName: `Chamando o garçom`,
+      slot: slot!,
+      product: `Chamando o garçom`,
     };
     console.log("order :", order);
 
@@ -40,9 +40,13 @@ export default function CallBartenderButton({
   };
 
   return (
-    <Button color="warning" onClick={handleGenerateOrder}>
-      <div className="flex gap-2">
-        <Image src={MegaphoneOutline} alt="icon" />
+    <Button
+      variant="primary"
+      style={{ width: "100%", borderRadius: 0 }}
+      onClick={handleGenerateOrder}
+    >
+      <div className="flex gap-2 items-center">
+        <Image src={MegaphoneOutline} alt="icon" width={24} height={24} />
         <span className="uppercase">Chamar o garçom</span>
       </div>
     </Button>

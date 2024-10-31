@@ -10,20 +10,20 @@ import { QuantityCounter } from "../QuantityCounter/QuantityCounter";
 
 type ProductProps = {
   product: TProduct;
-  store: string;
+  storeId: string;
   searchParams: {
     slot: string;
     slug: string;
   };
 };
 
-export const Product = ({ product, searchParams, store }: ProductProps) => {
+export const Product = ({ product, searchParams, storeId }: ProductProps) => {
   const { slot } = searchParams;
   const [quantity, setQuantity] = useState(0);
   // const [presentAlert] = useIonAlert();
 
   const order = {
-    store,
+    storeId,
     slot: slot!,
     product: product.description
       ? `${product.name} - ${product.description}`
