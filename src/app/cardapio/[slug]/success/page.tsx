@@ -53,9 +53,9 @@ export default async function Success({
       <div className="mt-12">
         <Button
           variant={`outline`}
-          // onClick={() => {
-          //   history.back();
-          // }}
+          onClick={() => {
+            history.back();
+          }}
         >
           Fazer outro pedido
         </Button>
