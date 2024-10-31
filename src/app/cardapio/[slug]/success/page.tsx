@@ -1,4 +1,4 @@
-import { Button } from "@/app/components/Button";
+import { GoBackButton } from "@/app/components/GoBackButton";
 import { LottieAnimation } from "@/app/components/LottieAnimation";
 import { generateOrder } from "@/app/services/store";
 
@@ -41,9 +41,7 @@ export default async function Success({
       )}
 
       <div className="mt-12">
-        <Button variant={`outline`} onClick={() => history.back()}>
-          Fazer outro pedido
-        </Button>
+        <GoBackButton />
       </div>
     </div>
   );

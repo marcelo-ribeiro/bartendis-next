@@ -1,7 +1,6 @@
 "use client";
 import animationData from "@/app/assets/lotties/check.json";
-import dynamic from "next/dynamic";
-const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
+import Lottie from "react-lottie";
 const defaultOptions = {
   loop: true,
   autoplay: true,

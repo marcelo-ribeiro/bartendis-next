@@ -1,3 +1,5 @@
+"use client";
+
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
 export const Button = ({
@@ -40,8 +42,8 @@ export const Button = ({
 
   return (
     <button
-      {...props}
       className={`${baseStyles} ${variantStyles()} ${sizeStyles()}`}
+      {...props}
     >
       {props.children}
     </button>

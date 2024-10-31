@@ -22,13 +22,10 @@ function createFirebaseApp(config: FirebaseOptions) {
 
 export const firebaseApp = createFirebaseApp(firebaseConfig);
 // const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
-console.log("firebaseApp :", firebaseApp);
 
 export const firebaseFirestore = getFirestore(firebaseApp);
-console.log("firebaseFirestore :", firebaseFirestore);
 // export const firebaseAuth = getAuth(firebaseApp);
 export const firebaseStorage = getStorage(firebaseApp);
-console.log("firebaseStorage :", firebaseStorage);
 // export const firebaseAnalytics = getAnalytics(firebaseApp);
 // export const firebaseAnalytics =
 //   typeof window !== "undefined" ? getAnalytics(firebaseApp) : null;
