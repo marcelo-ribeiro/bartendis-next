@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../components/Button";
 import { useOrders } from "../hooks/useOrders";
@@ -24,9 +23,8 @@ const getStatusColor = (key: string) => {
   return statusColor[key] ?? "";
 };
 
-const Orders: React.FC = () => {
-  const searchParams = useSearchParams();
-  const slug = searchParams.get("slug");
+export default function Orders({ searchParams }: any) {
+  const slug = searchParams.slug;
   const { store, storeId, openSells, loadStore } = useStore(slug);
   const { orders, getOrders, changeOrderStatus } = useOrders(slug, store);
   const ordersCurrentLength = useRef(0);
@@ -165,6 +163,4 @@ const Orders: React.FC = () => {
       </section>
     </main>
   );
-};
-
-export default Orders;
+}
