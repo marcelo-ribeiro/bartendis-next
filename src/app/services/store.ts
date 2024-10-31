@@ -44,12 +44,12 @@ export async function getStores() {
     const data = { id: doc.id, ...doc.data() };
     return data;
   });
-  console.log("stores :", stores);
+  // console.log("stores :", stores);
   return stores;
 }
 
 export async function getStoreId(slug: string) {
-  console.log("slug :", slug);
+  // console.log("slug :", slug);
   if (!slug) return;
   const id = await getDocumentIdBySlug(slug);
   return id;

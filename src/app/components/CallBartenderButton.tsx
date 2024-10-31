@@ -1,6 +1,7 @@
 "use client";
 
-import { MegaphoneOutline } from "react-ionicons";
+import MegaphoneOutline from "@/app/assets/icon-megaphone-outline.svg";
+import Image from "next/image";
 import { generateOrder } from "../services/store";
 import { Button } from "./Button";
 
@@ -41,8 +42,7 @@ export default function CallBartenderButton({
   return (
     <Button color="warning" onClick={handleGenerateOrder}>
       <div className="flex gap-2">
-        <MegaphoneOutline />
-        {/* <IonIcon slot="start" icon={megaphoneOutline} /> */}
+        <Image src={MegaphoneOutline} alt="icon" />
         <span className="uppercase">Chamar o garçom</span>
       </div>
     </Button>
