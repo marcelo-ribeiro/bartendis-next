@@ -97,3 +97,5 @@ export async function generateStaticParams() {
   const storesIds = stores.map(({ slug }) => ({ slug }));
   return storesIds;
 }
+
+export const revalidate = 60;
