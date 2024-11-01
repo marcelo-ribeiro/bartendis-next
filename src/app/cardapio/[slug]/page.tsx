@@ -98,4 +98,4 @@ export async function generateStaticParams() {
   return storesIds;
 }
 
-export const revalidate = 60;
+export const revalidate = false;
