@@ -3,49 +3,74 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
 export const Button = ({
-  variant,
-  size = "md",
+  variant = "clear",
+  size = "medium",
+  fill = "solid",
+  shape = "round",
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> &
   PropsWithChildren & {
-    variant?: "primary" | "accent" | "outline" | "clear";
-    size?: "lg" | "md" | "sm";
+    variant?: "primary" | "accent" | "light" | "clear";
+    size?: "large" | "medium" | "small";
+    fill?: "solid" | "outline";
+    shape?: "square" | "round" | "circle";
   }) => {
+  const { className, ...restProps } = props;
   const baseStyles =
-    "flex items-center justify-center py-2 rounded-lg font-semibold transition duration-300 appearance-none";
+    "flex items-center justify-center py-2 font-semibold transition duration-300 appearance-none";
 
   const sizeStyles = () => {
     switch (size) {
-      case "sm":
+      case "small":
         return "px-2 text-sm h-8";
-      case "lg":
+      case "large":
         return "px-6 text-lg h-12";
-      case "md":
+      case "medium":
       default:
         return "px-4 text-sm h-10";
+    }
+  };
+
+  const fillStyles = () => {
+    switch (fill) {
+      case "outline":
+        return "border border-neutral-300 text-neutral-900";
+      case "solid":
+      default:
+        return "";
+    }
+  };
+
+  const shapeStyles = () => {
+    switch (shape) {
+      case "circle":
+        return "rounded-full";
+      case "round":
+        return "rounded-lg";
+      case "square":
+      default:
+        return "rounded-md";
     }
   };
 
   const variantStyles = () => {
     switch (variant) {
       case "primary":
-        return "bg-red-600 text-white hover:bg-red-500";
+        return "bg-red-600 text-white";
       case "accent":
-        return "bg-green-500 text-white hover:bg-green-600";
-      case "outline":
-        return "border border-neutral-300 text-neutral-900 hover:bg-neutral-100";
+        return "bg-green-500 text-white";
+      case "light":
+        return "bg-gray-500 text-white";
       case "clear":
       default:
-        return "bg-gray-500 text-white hover:bg-gray-600";
+        return "";
     }
   };
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles()} ${sizeStyles()}`}
-      {...props}
-    >
-      {props.children}
-    </button>
+      className={`${baseStyles} ${shapeStyles()} ${fillStyles()} ${variantStyles()} ${sizeStyles()} ${className}`}
+      {...restProps}
+    />
   );
 };

@@ -52,18 +52,6 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
       alert("Escolha a quantidade para fazer o pedido.");
       return false;
     }
-    // try {
-    //   // handleGenerateOrder(order);
-    //   setQuantity(0);
-    //   const url = new URL(location.href);
-    //   url.searchParams.set("product", order.productName);
-    //   url.searchParams.set("quantity", String(order.quantity));
-    //   url.pathname = url.pathname + "/success";
-    //   window.open(url, "_self");
-    //   // history.pushState(null, "", url);
-    // } catch {
-    //   alert("Houve um erro para fazer o pedido. Tente novamente.");
-    // }
   };
 
   return (

@@ -23,15 +23,27 @@ export const QuantityCounter = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 rounded-md overflow-hidden">
-      <Button size="sm" variant="outline" onClick={decrement}>
-        <Image src={RemoveOutline} alt="adicionar" width={24} height={24} />
+    <div className="grid grid-cols-[2.5rem_auto_2.5rem] gap-1 rounded-md overflow-hidden">
+      <Button
+        style={{ padding: 0 }}
+        size="small"
+        fill="outline"
+        shape="round"
+        onClick={decrement}
+      >
+        <Image src={RemoveOutline} alt="adicionar" width={20} height={20} />
       </Button>
       <div className="flex items-center justify-center text-center text-sm rounded-lg bg-neutral-100 font-medium">
         {counter}
       </div>
-      <Button size="sm" variant="outline" onClick={increment}>
-        <Image src={AddOutline} alt="adicionar" width={24} height={24} />
+      <Button
+        style={{ padding: 0 }}
+        size="small"
+        fill="outline"
+        shape="round"
+        onClick={increment}
+      >
+        <Image src={AddOutline} alt="adicionar" width={20} height={20} />
       </Button>
     </div>
   );

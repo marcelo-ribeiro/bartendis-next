@@ -1,5 +1,6 @@
 import { GoBackButton } from "@/app/components/GoBackButton";
 import { LottieAnimation } from "@/app/components/LottieAnimation";
+import { RedirectHome } from "@/app/components/RedirectHome";
 import { generateOrder } from "@/app/services/store";
 
 export default async function Success({
@@ -35,7 +36,7 @@ export default async function Success({
         <div className="text-black text-2xl font-bold text-center">
           <span color="success">Seu pedido foi realizado!</span>
           <br />
-          {quantity ? quantity + "x " : ""}
+          {quantity ? quantity + "x" : ""}
           {product}
         </div>
       )}
@@ -43,6 +44,8 @@ export default async function Success({
       <div className="mt-12">
         <GoBackButton />
       </div>
+
+      <RedirectHome />
     </div>
   );
 }

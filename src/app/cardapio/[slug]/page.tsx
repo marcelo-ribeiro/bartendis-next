@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-async-client-component */
 
+import Logo from "@/app/assets/logotipo-prime-delicatessen.jpeg";
 import CallBartenderButton from "@/app/components/CallBartenderButton";
 import { Product } from "@/app/components/Product";
 import {
@@ -27,7 +28,7 @@ export default async function Cardapio({
 
   return (
     <main>
-      <header className="sticky top-0 z-30 w-full grid h-12 bg-white border-b border-stone-200">
+      <header className="sticky top-0 z-30 w-full grid h-12 bg-white/80 border-b border-stone-200 backdrop-blur-md">
         <nav className="grid justify-items-center items-center">
           <h1 className="font-semibold text-lg">{store?.name}</h1>
         </nav>
@@ -35,17 +36,15 @@ export default async function Cardapio({
 
       <section className="relative">
         <header>
-          <nav className="pt-4 pb-5">
-            <div className="logo-wrapper relative flex justify-center mb-2 w-auto h-28">
+          <nav className="pt-2 pb-5">
+            <div className="logo-wrapper relative flex justify-center w-full h-32">
               <Image
                 alt="Prime Delicatessen"
-                src="/logotipo-prime-delicatessen.jpeg"
-                className="object-contain"
-                priority={true}
-                fill={true}
+                src={Logo}
+                className="object-contain w-32 h-32"
               />
             </div>
-            <div className="text-center font-base font-semibold px-6">
+            <div className="text-center font-base font-semibold px-6 mt-1">
               <span>Olá! Conheça nosso cardápio.</span>
             </div>
           </nav>

@@ -18,8 +18,8 @@ import { getDocumentIdBySlug } from "./utils";
 export type TOrder = {
   id: string;
   created: string;
-  slotName: string;
-  productName: string;
+  slot: string;
+  product: string;
   quantity: number;
   status: string;
 };
@@ -37,12 +37,12 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
   }, [slug, storeId]);
 
   async function generateOrder({
-    slotName,
-    productName,
+    slot,
+    product,
     quantity,
   }: {
-    slotName: string;
-    productName: string;
+    slot: string;
+    product: string;
     quantity: number;
   }) {
     if (!storeId) return;
@@ -55,8 +55,8 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
     );
     const docRef = await addDoc(ordersCollection, {
       created: serverTimestamp(),
-      slotName,
-      productName,
+      slot,
+      product,
       quantity,
     });
     console.log("docRef :", docRef);

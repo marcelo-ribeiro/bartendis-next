@@ -37,8 +37,8 @@ export type TProduct = {
 export type TOrder = {
   id: string;
   created: string;
-  slotName: string;
-  productName: string;
+  slot: string;
+  product: string;
   quantity: number;
 };
 
@@ -164,12 +164,12 @@ export const useStore = (slug: string | null) => {
   }
 
   async function generateOrder({
-    slotName,
-    productName,
+    slot,
+    product,
     quantity,
   }: {
-    slotName: string;
-    productName: string;
+    slot: string;
+    product: string;
     quantity?: number;
   }) {
     if (!storeId) return;
@@ -182,8 +182,8 @@ export const useStore = (slug: string | null) => {
     );
     const docOptions: any = {
       created: serverTimestamp(),
-      slotName,
-      productName,
+      slot,
+      product,
     };
     if (quantity) docOptions.quantity = quantity;
     await addDoc(ordersCollection, docOptions);
@@ -217,8 +217,7 @@ export const useStore = (slug: string | null) => {
   async function openSells() {
     if (!storeId) return;
     const docRef = doc(firebaseFirestore, `stores`, storeId);
-    console.log("docRef :", docRef);
-    updateDoc(docRef, { openAt: new Date() });
+    await updateDoc(docRef, { openAt: new Date() });
   }
 
   // async function getProductById(productId: string) {

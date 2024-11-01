@@ -32,8 +32,8 @@ export type TProduct = {
 export type TOrder = {
   id: string;
   created: string;
-  slotName: string;
-  productName: string;
+  slot: string;
+  product: string;
   quantity: number;
 };
 

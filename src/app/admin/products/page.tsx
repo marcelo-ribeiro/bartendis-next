@@ -295,7 +295,7 @@ export default function ProductTable({ searchParams }: any) {
                 </td>
                 <td className="px-3 py-2 border border-y-slate-200">
                   <div className="relative flex gap-2 justify-center items-center">
-                    <Button color="light" size="sm">
+                    <Button color="light" size="small">
                       Escolher imagem
                     </Button>
                     <input
@@ -329,7 +329,7 @@ export default function ProductTable({ searchParams }: any) {
                   <Button
                     type="submit"
                     variant="primary"
-                    size="sm"
+                    size="small"
                     onClick={handleAddProduct}
                   >
                     Adicionar produto
@@ -360,7 +360,7 @@ export default function ProductTable({ searchParams }: any) {
                         />
                         <Button
                           variant="outline"
-                          size="sm"
+                          size="small"
                           onClick={() => handleRemoveImage(index)}
                         >
                           Remover
@@ -368,7 +368,7 @@ export default function ProductTable({ searchParams }: any) {
                       </div>
                     ) : (
                       <div className="relative flex gap-2 justify-center items-center">
-                        <Button color="outline" size="sm">
+                        <Button color="outline" size="small">
                           Escolher imagem
                         </Button>
                         <input
@@ -402,14 +402,14 @@ export default function ProductTable({ searchParams }: any) {
                   <td className="px-4 py-2 border border-y-slate-200 text-center">
                     <div className="flex gap-2 justify-center">
                       <Button
-                        size="sm"
+                        size="small"
                         color="outline"
                         onClick={() => handleUpdateProduct(index)}
                       >
                         Salvar Produto
                       </Button>
                       <Button
-                        size="sm"
+                        size="small"
                         color="outline"
                         onClick={() => handleRemoveProduct(index)}
                       >

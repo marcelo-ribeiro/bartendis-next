@@ -31,10 +31,17 @@ export default function Orders({ searchParams }: any) {
   const [hasNewOrder, setHasNewOrder] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
 
+  useEffect(() => {
+    if (!storeId || !store) return;
+    getOrders(storeId);
+  }, [getOrders, store, storeId]);
+
   const filteredOrders = useMemo(() => {
     if (!orders) return null;
-    if (!orders || searchFilter === "") return orders;
-    return orders?.filter((order) => order.slotName === searchFilter);
+    if (searchFilter === "") return orders;
+    console.log("new orders");
+
+    return orders?.filter((order) => order.slot === searchFilter);
   }, [searchFilter, orders]);
 
   useEffect(() => {
@@ -65,8 +72,7 @@ export default function Orders({ searchParams }: any) {
 
   const handleOpenSells = async () => {
     await openSells();
-    loadStore(storeId);
-    getOrders(storeId!);
+    await loadStore(storeId);
   };
 
   const handleSelect = (event: any) => {
@@ -78,19 +84,14 @@ export default function Orders({ searchParams }: any) {
   };
 
   return (
-    <main>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonTitle>{store?.name} - Pedidos</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
+    <main className="bg-neutral-100 h-lvh">
+      <section>
+        <header className="grid xl:grid-flow-col xl:auto-cols-auto justify-between items-center px-8 py-4 bg-white border-b border-neutral-300">
+          <h1 className="font-medium text-lg">{store?.name} - Pedidos</h1>
 
-      <section className="bg-slate-100">
-        <header className="grid grid-flow-col auto-cols-auto justify-between">
-          <h1>{store?.name} - Pedidos</h1>
-          <div className=" grid grid-flow-col w-full">
-            <div className="grid grid-flow-col gap-2 items-center px-4">
-              <span>Filtrar por:</span>
+          <div className=" grid grid-flow-col gap-4 w-full text-sm">
+            <div className="grid grid-flow-col gap-2 items-center">
+              <span className="font-medium">Filtrar por:</span>
               <select value={searchFilter} onChange={handleSelect}>
                 <option value="">Todas mesas</option>
                 <option value="mesa-1">Mesa 1</option>
@@ -98,31 +99,39 @@ export default function Orders({ searchParams }: any) {
                 <option value="mesa-3">Mesa 3</option>
               </select>
             </div>
-            <div className="grid grid-flow-col gap-2 items-center px-4">
-              <span>
-                Aberto às:{" "}
+            <div className="grid grid-flow-col gap-4 items-center">
+              <div>
+                <span className="font-medium">Aberto às: </span>
                 {store
                   ? new Date(store.openAt.toMillis()!).toLocaleString()
                   : ""}
-              </span>
-              <Button variant="primary" onClick={handleOpenSells}>
+              </div>
+              <Button variant="accent" onClick={handleOpenSells}>
                 Abrir o caixa
               </Button>
             </div>
           </div>
         </header>
 
+        {!filteredOrders?.length && (
+          <div className="font-medium text-3xl text-neutral-600 text-center py-12 px-8 leading-normal">
+            O caixa está aberto.
+            <br />
+            Nenhum pedido realizado.
+          </div>
+        )}
+
         <section className={hasNewOrder ? "new-order" : ""}>
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3q gap-8 w-full p-8">
             {filteredOrders?.map((order, index) => (
               <article
                 key={order.id}
-                className={`grid gap-4 m-0 text-center p-6 place-content-center ${getStatusColor(
+                className={`grid gap-4 m-0 bg-neutral-200 text-center p-6 rounded-xl ${getStatusColor(
                   order.status
                 )}`}
               >
                 <div className="grid grid-flow-col gap-2 items-center">
-                  <span>Status do pedido</span>
+                  <span className="font-medium">Status do pedido:</span>
                   <select
                     value={order.status ?? orderStatus.pendent}
                     onChange={(event) =>
@@ -136,26 +145,38 @@ export default function Orders({ searchParams }: any) {
                     ))}
                   </select>
                 </div>
-                <div color="medium" className="text-xl opacity-70 uppercase">
-                  Pedido #{filteredOrders.length - index}
+                <div color="medium" className="text-xl uppercase">
+                  <span className="opacity-70">
+                    Pedido #{filteredOrders.length - index}
+                  </span>
                   <br />
-                  <b>{new Date(order.created).toLocaleString()}</b>
+                  <span className="font-semibold">
+                    {new Date(order.created).toLocaleString()}
+                  </span>
                 </div>
-                <hr />
-                <div color="danger" className="text-2xl font-bold uppercase">
-                  {order.slotName?.replace("-", " ")}
-                </div>
-                <div color="dark" className="text-3xl font-bold opacity-90">
-                  {order.productName}
-                </div>
-                {!!order.quantity && (
+                <hr className="border-t border-black/20" />
+                <div className="grid gap-2">
+                  <div
+                    color="danger"
+                    className="text-2xl font-semibold uppercase opacity-70"
+                  >
+                    {order.slot?.replace("-", " ")}
+                  </div>
+                  {!!order.quantity && (
+                    <div
+                      color="dark"
+                      className="text-2xl font-semibold opacity-70"
+                    >
+                      Qtd: {order.quantity}X
+                    </div>
+                  )}
                   <div
                     color="dark"
-                    className="text-2xl font-bold uppercase opacity-70"
+                    className="text-3xl font-semibold opacity-90"
                   >
-                    QTD: {order.quantity}x
+                    {order.product}
                   </div>
-                )}
+                </div>
               </article>
             ))}
           </section>

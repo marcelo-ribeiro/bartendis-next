@@ -86,7 +86,7 @@ export const Categories = () => {
           placeholder="Digite a categoria"
           className="px-2 py-1 border border-slate-300 rounded-lg"
         />
-        <Button variant="primary" size="sm" onClick={handleAddCategory}>
+        <Button variant="primary" size="small" onClick={handleAddCategory}>
           Adicionar
         </Button>
       </div>
