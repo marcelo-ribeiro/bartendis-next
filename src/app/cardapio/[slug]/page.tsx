@@ -23,8 +23,11 @@ export default async function Cardapio({
   const { slug } = params;
   const { slot } = searchParams;
   const storeId = await getDocumentIdBySlug(slug);
-  const store = await loadStore(storeId!);
-  const menu = await getMenu(storeId!);
+
+  if (!storeId) return <div>Essa loja não existe</div>;
+
+  const store = await loadStore(storeId);
+  const menu = await getMenu(storeId);
 
   return (
     <main>

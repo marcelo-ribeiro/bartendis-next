@@ -268,7 +268,7 @@ export default function ProductTable({ searchParams }: any) {
   };
 
   const handleRevalidate = async () => {
-    return await revalidate(`/${slug}`);
+    return await revalidate(`/cardapio/${slug}`);
   };
 
   return (
