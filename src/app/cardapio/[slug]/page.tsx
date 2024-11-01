@@ -83,7 +83,7 @@ export default async function Cardapio({
         </section>
       </section>
 
-      <footer>
+      <footer className="sticky bottom-0">
         <nav>
           <CallBartenderButton searchParams={searchParams} storeId={storeId!} />
         </nav>

@@ -41,8 +41,10 @@ export default function CallBartenderButton({
 
   return (
     <Button
-      variant="primary"
-      style={{ width: "100%", borderRadius: 0 }}
+      variant="accent"
+      size="large"
+      shape="square"
+      style={{ width: "100%" }}
       onClick={handleGenerateOrder}
     >
       <div className="flex gap-2 items-center">

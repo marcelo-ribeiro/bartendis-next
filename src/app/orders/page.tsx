@@ -106,7 +106,11 @@ export default function Orders({ searchParams }: any) {
                   ? new Date(store.openAt.toMillis()!).toLocaleString()
                   : ""}
               </div>
-              <Button variant="accent" onClick={handleOpenSells}>
+              <Button
+                variant="primary"
+                fill="outline"
+                onClick={handleOpenSells}
+              >
                 Abrir o caixa
               </Button>
             </div>

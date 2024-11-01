@@ -31,16 +31,6 @@ export const Button = ({
     }
   };
 
-  const fillStyles = () => {
-    switch (fill) {
-      case "outline":
-        return "border border-neutral-300 text-neutral-900";
-      case "solid":
-      default:
-        return "";
-    }
-  };
-
   const shapeStyles = () => {
     switch (shape) {
       case "circle":
@@ -49,27 +39,35 @@ export const Button = ({
         return "rounded-lg";
       case "square":
       default:
-        return "rounded-md";
+        return "";
     }
   };
 
   const variantStyles = () => {
     switch (variant) {
       case "primary":
-        return "bg-red-600 text-white";
+        return fill === "outline"
+          ? "border border-red-600 text-red-600"
+          : "bg-red-600 text-white";
       case "accent":
-        return "bg-green-500 text-white";
+        return fill === "outline"
+          ? "border border-yellow-500 text-yellow-500"
+          : "bg-yellow-500";
       case "light":
-        return "bg-gray-500 text-white";
+        return fill === "outline"
+          ? "border border-neutral-400 text-neutral-600"
+          : "bg-neutral-100 text-neutral-600";
       case "clear":
       default:
-        return "";
+        return fill === "outline"
+          ? "border border-neutral-400 text-neutral-900"
+          : "";
     }
   };
 
   return (
     <button
-      className={`${baseStyles} ${shapeStyles()} ${fillStyles()} ${variantStyles()} ${sizeStyles()} ${className}`}
+      className={`${baseStyles} ${variantStyles()} ${shapeStyles()} ${sizeStyles()} ${className}`}
       {...restProps}
     />
   );

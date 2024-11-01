@@ -94,8 +94,9 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
               counter={quantity}
             />
           </div>
+
           {quantity <= 0 ? (
-            <Button variant="primary" onClick={handleSetOrder}>
+            <Button variant="light" onClick={handleSetOrder}>
               Fazer pedido
             </Button>
           ) : (
