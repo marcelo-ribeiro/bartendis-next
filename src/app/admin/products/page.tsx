@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/app/components/Button";
+import { revalidate } from "@/app/services/revalidate";
 import {
   addDoc,
   collection,
@@ -35,8 +36,7 @@ export default function ProductTable({ searchParams }: any) {
   const [newImageFile, setNewImageFile] = useState<any>(null); // Para armazenar o arquivo de imagem para novo produto
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editingImageFile, setEditingImageFile] = useState<any[]>([]); // Para armazenar novos arquivos de imagem ao editar
-  const storeId = searchParams.storeId;
-  const categoryId = searchParams.categoryId;
+  const { storeId, categoryId, slug } = searchParams;
 
   // Função para carregar os produtos da Firestore
   useEffect(() => {
@@ -111,6 +111,7 @@ export default function ProductTable({ searchParams }: any) {
         ]);
         setNewProduct({ name: "", image: "", description: "", price: 0 });
         setNewImageFile(null); // Resetar o arquivo de imagem
+        handleRevalidate();
       } catch (error) {
         console.error("Erro ao adicionar o produto:", error);
       }
@@ -160,6 +161,7 @@ export default function ProductTable({ searchParams }: any) {
       updatedFiles[index] = null;
       setEditingImageFile(updatedFiles);
 
+      handleRevalidate();
       alert("Produto atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar o produto:", error);
@@ -195,6 +197,7 @@ export default function ProductTable({ searchParams }: any) {
       const updatedProducts = products.filter((_, i) => i !== index);
       setProducts(updatedProducts);
 
+      handleRevalidate();
       alert("Produto removido com sucesso!");
     } catch (error) {
       console.error("Erro ao remover o produto:", error);
@@ -224,6 +227,7 @@ export default function ProductTable({ searchParams }: any) {
 
   const handleNewProductChange = (e: any, field: any) => {
     setNewProduct({ ...newProduct, [field]: e.target.value });
+    handleRevalidate();
   };
 
   const handleRemoveImage = async (index: number) => {
@@ -256,10 +260,15 @@ export default function ProductTable({ searchParams }: any) {
       updatedProducts[index].image = "";
       setProducts(updatedProducts);
 
+      handleRevalidate();
       alert("Imagem removida com sucesso!");
     } catch (error) {
       console.error("Erro ao remover a imagem:", error);
     }
+  };
+
+  const handleRevalidate = async () => {
+    return await revalidate(`/${slug}`);
   };
 
   return (
@@ -359,7 +368,7 @@ export default function ProductTable({ searchParams }: any) {
                           alt={product.name}
                         />
                         <Button
-                          variant="outline"
+                          fill="outline"
                           size="small"
                           onClick={() => handleRemoveImage(index)}
                         >
