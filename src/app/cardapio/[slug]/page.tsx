@@ -32,8 +32,8 @@ export default async function Cardapio({
 
   return (
     <main>
-      <header className="sticky top-0 z-30 w-full grid h-12 bg-white/80 border-b border-stone-200 backdrop-blur-md">
-        <nav className="grid justify-items-center items-center">
+      <header className="sticky top-0 z-30 grid w-full h-12 bg-white/80 border-b border-stone-200 backdrop-blur-md">
+        <nav className="grid justify-items-center items-center h-12">
           <h1 className="font-semibold text-lg">{store?.name}</h1>
         </nav>
       </header>
