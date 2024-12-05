@@ -64,7 +64,7 @@ export const Product = ({
     <article className="card overflow-hidden rounded-xl bg-white shadow-md">
       <div
         className={`card__image w-full aspect-video ${
-          product.image ? "#fff" : "bg-slate-50"
+          product.image ? "bg-white" : "bg-gray-50"
         }`}
       >
         {product.image && (
