@@ -11,7 +11,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { firebaseFirestore } from "../libraries/firebase";
+import {firebaseFirestore} from "../libraries/firebase";
 
 export type StoreProps = {
   id?: string;
@@ -40,19 +40,13 @@ export type TOrder = {
 export async function getStores() {
   const collectionRef = collection(firebaseFirestore, "stores");
   const snapshot = await getDocs(collectionRef);
-  const stores = snapshot.docs.map((doc: any) => {
-    const data = { id: doc.id, ...doc.data() };
-    return data;
-  });
-  // console.log("stores :", stores);
-  return stores;
+  return snapshot.docs.map((doc: any) => ({id: doc.id, ...doc.data()}));
 }
 
-export async function getStoreId(slug: string) {
+export async function getStoreIdBySlug(slug: string) {
   // console.log("slug :", slug);
   if (!slug) return;
-  const id = await getDocumentIdBySlug(slug);
-  return id;
+  return await getDocumentIdBySlug(slug);
 }
 
 export async function loadStore(storeId: string | null) {
@@ -106,11 +100,13 @@ export async function generateOrder({
   slot,
   product,
   quantity,
+  status = "Pendente",
 }: {
   storeId: string;
   slot: string;
   product: string;
   quantity?: number;
+  status: string;
 }) {
   if (!storeId) return;
 
@@ -124,12 +120,13 @@ export async function generateOrder({
     created: serverTimestamp(),
     slot,
     product,
+    status
   };
   if (quantity) docOptions.quantity = quantity;
   await addDoc(ordersCollection, docOptions);
 }
 
-export async function getDocumentIdBySlug(slug: string) {
+  export async function getDocumentIdBySlug(slug: string) {
   // Create a reference to the collection
   const collectionRef = collection(firebaseFirestore, "stores");
 
@@ -143,8 +140,7 @@ export async function getDocumentIdBySlug(slug: string) {
     // Check if any documents were returned
     if (!querySnapshot.empty) {
       // Get the document ID of the first matching document
-      const documentId = querySnapshot.docs[0].id;
-      return documentId;
+      return querySnapshot.docs[0].id;
     } else {
       // No document with the given slug was found
       return null;

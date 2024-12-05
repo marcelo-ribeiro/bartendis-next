@@ -234,10 +234,10 @@ export const useStore = (slug: string | null) => {
 
   useEffect(() => {
     if (!!store || !!menu) return;
-    getStoreId().then((storeId) => {
+    getStoreId().then(async (storeId) => {
       if (!storeId) return;
-      loadStore(storeId);
-      getMenu(storeId);
+      await loadStore(storeId);
+      await getMenu(storeId);
     });
   }, [getStoreId, menu, store, storeId]);
 

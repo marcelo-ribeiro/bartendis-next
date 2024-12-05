@@ -28,6 +28,7 @@ export default async function Cardapio({
 
   const store = await loadStore(storeId);
   const menu = await getMenu(storeId);
+  const enableOrder = false;
 
   return (
     <main>
@@ -38,7 +39,7 @@ export default async function Cardapio({
       </header>
 
       <section className="relative">
-        <header>
+        <header className="bg-white">
           <nav className="pt-2 pb-5">
             <div className="logo-wrapper relative flex justify-center w-full h-32">
               <Image
@@ -47,27 +48,30 @@ export default async function Cardapio({
                 className="object-contain w-32 h-32"
               />
             </div>
-            <div className="text-center font-base font-semibold px-6 mt-1">
+            <div className="text-center font-base font-medium px-6">
               <span>Olá! Conheça nosso cardápio.</span>
             </div>
           </nav>
         </header>
 
-        <section id="menuList" className="grid pt-3 pb-6 bg-slate-100">
+        <section
+          id="menuList"
+          className="grid pt-4 pb-8 bg-gray-100 rounded-t-3xl"
+        >
           {!!menu &&
             Object.entries(menu)?.map(([categorieName, products], index) => {
               if (Array.isArray(products) && !products.length) {
                 return <div key={index}></div>;
               }
               return (
-                <div key={index} className="relative grid pt-2">
+                <div key={index} className="relative grid pt-4">
                   <div className="category px-6 text-xl font-semibold">
                     <span className="pl-1" color="dark">
                       {categorieName}
                     </span>
                   </div>
 
-                  <div className="products scroll-horizontal grid grid-flow-col auto-cols-[10rem] gap-2 px-6 py-4 overflow-x-auto">
+                  <div className="products scroll-horizontal grid grid-flow-col auto-cols-[10rem] gap-3 px-6 py-3 overflow-x-auto">
                     {!!products &&
                       Array.isArray(products) &&
                       [...products].map((product) => (
@@ -76,6 +80,7 @@ export default async function Cardapio({
                             product={product}
                             searchParams={{ slug, slot }}
                             storeId={storeId!}
+                            enableOrder={enableOrder}
                           />
                         </div>
                       ))}
@@ -86,11 +91,16 @@ export default async function Cardapio({
         </section>
       </section>
 
-      <footer className="sticky bottom-0">
-        <nav>
-          <CallBartenderButton searchParams={searchParams} storeId={storeId!} />
-        </nav>
-      </footer>
+      {enableOrder && (
+        <footer className="sticky bottom-0">
+          <nav>
+            <CallBartenderButton
+              searchParams={searchParams}
+              storeId={storeId!}
+            />
+          </nav>
+        </footer>
+      )}
     </main>
   );
 }

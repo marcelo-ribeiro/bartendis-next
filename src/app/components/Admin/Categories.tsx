@@ -13,6 +13,7 @@ export const Categories = () => {
   // const router = useIonRouter(); // Usado para navegação entre páginas
   const storeId = searchParams.get("storeId");
   const categoryId = searchParams.get("categoryId");
+  const slug = searchParams.get("slug");
 
   // Função para carregar as categorias da Firestore
   useEffect(() => {
@@ -40,7 +41,7 @@ export const Categories = () => {
   };
 
   const redirect = (id: string) => {
-    location.href = `/admin/produtos/?storeId=${storeId}&categoryId=${id}`; // Redirecionar para a nova categoria
+    location.href = `/admin/produtos/?storeId=${storeId}&categoryId=${id}&slug=${slug}`; // Redirecionar para a nova categoria
   };
 
   // Função para cadastrar uma nova categoria e redirecionar para sua URL

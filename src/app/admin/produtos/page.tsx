@@ -24,7 +24,15 @@ import { Categories } from "../../components/Admin/Categories";
 import { TProduct } from "../../hooks/useStore";
 import { firebaseFirestore, firebaseStorage } from "../../libraries/firebase";
 
-export default function ProductTable({ searchParams }: any) {
+export default function ProductTable({
+  searchParams,
+}: {
+  searchParams: {
+    storeId: string;
+    categoryId: string;
+    slug: string;
+  };
+}) {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [newProduct, setNewProduct] = useState<TProduct>({
     name: "",
@@ -55,8 +63,7 @@ export default function ProductTable({ searchParams }: any) {
       console.log("querySnapshot :", querySnapshot);
       setProducts(() => {
         const products = querySnapshot.docs.map((doc: any) => {
-          const data = { id: doc.id, ...doc.data() };
-          return data;
+          return { id: doc.id, ...doc.data() };
         });
         console.log("products :", products);
         return products;
@@ -366,6 +373,8 @@ export default function ProductTable({ searchParams }: any) {
                           className="inline-flex object-contain w-12 h-12"
                           src={product.image}
                           alt={product.name}
+                          width={38}
+                          height={38}
                         />
                         <Button
                           fill="outline"

@@ -40,10 +40,12 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
     slot,
     product,
     quantity,
+    status,
   }: {
     slot: string;
     product: string;
     quantity: number;
+    status: string;
   }) {
     if (!storeId) return;
 
@@ -58,6 +60,7 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
       slot,
       product,
       quantity,
+      status
     });
     console.log("docRef :", docRef);
   }
@@ -97,7 +100,7 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
   async function changeOrderStatus(orderId: string, status: string) {
     if (!storeId) return;
     const docRef = doc(firebaseFirestore, `stores`, storeId, "orders", orderId);
-    updateDoc(docRef, { status });
+    await updateDoc(docRef, { status });
   }
 
   useEffect(() => {

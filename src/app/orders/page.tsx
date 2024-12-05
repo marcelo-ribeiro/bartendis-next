@@ -15,12 +15,12 @@ enum orderStatus {
 
 const getStatusColor = (key: string) => {
   const statusColor: any = {
-    Pendent: "",
-    "Em preparo": "bg-yellow-100",
-    Finalizado: "bg-green-100",
-    Cancelado: "bg-red-100",
+    Pendent: "bg-neutral-200",
+    "Em preparo": "bg-yellow-200",
+    Finalizado: "bg-green-200",
+    Cancelado: "bg-red-200",
   };
-  return statusColor[key] ?? "";
+  return statusColor[key] ?? "bg-neutral-200";
 };
 
 export default function Orders({ searchParams }: any) {
@@ -37,10 +37,10 @@ export default function Orders({ searchParams }: any) {
   }, [getOrders, store, storeId]);
 
   const filteredOrders = useMemo(() => {
+    console.log("orders", orders);
     if (!orders) return null;
     if (searchFilter === "") return orders;
     console.log("new orders");
-
     return orders?.filter((order) => order.slot === searchFilter);
   }, [searchFilter, orders]);
 
@@ -76,15 +76,15 @@ export default function Orders({ searchParams }: any) {
   };
 
   const handleSelect = (event: any) => {
-    setSearchFilter(event.detail.value);
+    setSearchFilter(event.target.value);
   };
 
-  const handleSelectStatus = (orderId: string, status: string) => {
-    changeOrderStatus(orderId, status);
+  const handleSelectStatus = async (orderId: string, status: string) => {
+    await changeOrderStatus(orderId, status);
   };
 
   return (
-    <main className="bg-neutral-100 h-lvh">
+    <main className="bg-neutral-100 min-h-svh">
       <section>
         <header className="grid xl:grid-flow-col xl:auto-cols-auto justify-between items-center px-8 py-4 bg-white border-b border-neutral-300">
           <h1 className="font-medium text-lg">{store?.name} - Pedidos</h1>
@@ -130,7 +130,7 @@ export default function Orders({ searchParams }: any) {
             {filteredOrders?.map((order, index) => (
               <article
                 key={order.id}
-                className={`grid gap-4 m-0 bg-neutral-200 text-center p-6 rounded-xl ${getStatusColor(
+                className={`grid gap-4 m-0 p-6 border border-black/10 text-center rounded-xl ${getStatusColor(
                   order.status
                 )}`}
               >

@@ -15,9 +15,15 @@ type ProductProps = {
     slot: string;
     slug: string;
   };
+  enableOrder?: boolean;
 };
 
-export const Product = ({ product, searchParams, storeId }: ProductProps) => {
+export const Product = ({
+  product,
+  searchParams,
+  storeId,
+  enableOrder,
+}: ProductProps) => {
   const { slot } = searchParams;
   const [quantity, setQuantity] = useState(0);
   // const [presentAlert] = useIonAlert();
@@ -86,7 +92,7 @@ export const Product = ({ product, searchParams, storeId }: ProductProps) => {
         </p>
       </header>
       {/* <section className="card__content min-h-8 px-4 pb-3 text-xs leading-4 font-base"></section> */}
-      {!!slot && (
+      {enableOrder && !!slot && (
         <footer className="grid gap-3 px-2 pb-2">
           <div className="mx-1">
             <QuantityCounter

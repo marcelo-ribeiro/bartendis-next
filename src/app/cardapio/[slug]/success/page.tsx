@@ -22,6 +22,7 @@ export default async function Success({
       slot,
       product,
       quantity: Number(quantity),
+      status: "Pendente"
     });
     hasSuccess = true;
   } catch {
