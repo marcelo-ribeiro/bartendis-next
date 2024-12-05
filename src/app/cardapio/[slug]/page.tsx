@@ -49,7 +49,7 @@ export default async function Cardapio({
               />
             </div>
             <div className="text-center font-base font-medium px-6">
-              <span>Olá! Conheça nosso cardápio.</span>
+              Olá! Conheça nosso <b>cardápio</b>
             </div>
           </nav>
         </header>
