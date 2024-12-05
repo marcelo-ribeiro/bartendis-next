@@ -28,6 +28,8 @@ export const Product = ({
   const [quantity, setQuantity] = useState(0);
   // const [presentAlert] = useIonAlert();
 
+  const classCardImageBg = product.image ? "bg-white" : "bg-gray-50";
+
   const order = {
     storeId,
     slot: slot!,
@@ -62,11 +64,7 @@ export const Product = ({
 
   return (
     <article className="card overflow-hidden rounded-xl bg-white shadow-md">
-      <div
-        className={`card__image w-full aspect-video ${
-          product.image ? "bg-white" : "bg-gray-50"
-        }`}
-      >
+      <div className={`card__image w-full aspect-video ${classCardImageBg}`}>
         {product.image && (
           <Image
             className="w-full h-full object-contain"
