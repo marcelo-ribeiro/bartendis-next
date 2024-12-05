@@ -11,7 +11,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import {firebaseFirestore} from "../libraries/firebase";
+import { firebaseFirestore } from "../libraries/firebase";
 
 export type StoreProps = {
   id?: string;
@@ -40,7 +40,7 @@ export type TOrder = {
 export async function getStores() {
   const collectionRef = collection(firebaseFirestore, "stores");
   const snapshot = await getDocs(collectionRef);
-  return snapshot.docs.map((doc: any) => ({id: doc.id, ...doc.data()}));
+  return snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
 }
 
 export async function getStoreIdBySlug(slug: string) {
@@ -106,7 +106,7 @@ export async function generateOrder({
   slot: string;
   product: string;
   quantity?: number;
-  status: string;
+  status?: string;
 }) {
   if (!storeId) return;
 
@@ -120,13 +120,13 @@ export async function generateOrder({
     created: serverTimestamp(),
     slot,
     product,
-    status
+    status,
   };
   if (quantity) docOptions.quantity = quantity;
   await addDoc(ordersCollection, docOptions);
 }
 
-  export async function getDocumentIdBySlug(slug: string) {
+export async function getDocumentIdBySlug(slug: string) {
   // Create a reference to the collection
   const collectionRef = collection(firebaseFirestore, "stores");
 
