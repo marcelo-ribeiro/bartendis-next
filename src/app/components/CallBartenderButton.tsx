@@ -2,10 +2,10 @@
 
 import MegaphoneOutline from "@/app/assets/icon-megaphone-outline.svg";
 import Image from "next/image";
-import { generateOrder } from "../services/store";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "./Button";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export default function CallBartenderButton({
   searchParams,
   storeId,
@@ -14,43 +14,29 @@ export default function CallBartenderButton({
   searchParams: {
     slot: string;
   };
+  props?: never;
 }) {
+  const pathname = usePathname();
   const { slot } = searchParams;
 
-  const handleGenerateOrder = async () => {
-    const order = {
-      storeId,
-      slot: slot!,
-      product: `Chamando o garçom`,
-    };
-    console.log("order :", order);
-
-    try {
-      // lastOrderProduct.current = order;
-      await generateOrder(order);
-      // setShowSuccess(true);
-      setTimeout(() => {
-        // setShowSuccess(false);
-      }, 4000);
-    } catch {
-      alert(
-        "Ocorreu um erro ao gerar o seu pedido. Contate o suporte do estabelecimento."
-      );
-    }
+  const order = {
+    storeId,
+    slot: slot!,
+    product: `Chamando o garçom`,
   };
 
   return (
-    <Button
-      variant="accent"
-      size="large"
-      shape="square"
-      style={{ width: "100%" }}
-      onClick={handleGenerateOrder}
+    <Link
+      className="grid"
+      href={`${pathname}/success/?${new URLSearchParams(order).toString()}`}
+      prefetch
     >
-      <div className="flex gap-2 items-center">
-        <Image src={MegaphoneOutline} alt="icon" width={24} height={24} />
-        <span className="uppercase">Chamar o garçom</span>
-      </div>
-    </Button>
+      <Button variant="accent" size="large" shape="square" expand="block">
+        <div className="flex gap-2 items-center">
+          <Image src={MegaphoneOutline} alt="icon" width={24} height={24} />
+          <span className="uppercase">Chamar o garçom</span>
+        </div>
+      </Button>
+    </Link>
   );
 }

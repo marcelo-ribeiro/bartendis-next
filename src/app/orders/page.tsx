@@ -2,47 +2,51 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../components/Button";
-import { useOrders } from "../hooks/useOrders";
+import { OrderStatus, OrderStatusLabels, useOrders } from "../hooks/useOrders";
 import { useStore } from "../hooks/useStore";
 import "./style.css";
 
-enum orderStatus {
-  pendent = "Pendente",
-  ready = "Em preparo",
-  done = "Finalizado",
-  canceled = "Cancelado",
-}
-
-const getStatusColor = (key: string) => {
-  const statusColor: any = {
-    Pendent: "bg-neutral-200",
-    "Em preparo": "bg-yellow-200",
-    Finalizado: "bg-green-200",
-    Cancelado: "bg-red-200",
+const getStatusColor = (status: OrderStatus) => {
+  console.log("status :", status);
+  const statusColor = {
+    [OrderStatus.PENDENT]: "bg-white",
+    [OrderStatus.STARTED]: "bg-yellow-200",
+    [OrderStatus.DONE]: "bg-green-200",
+    [OrderStatus.CANCELED]: "bg-red-200",
   };
-  return statusColor[key] ?? "bg-neutral-200";
+  return statusColor[status] ?? statusColor[OrderStatus.PENDENT];
 };
 
 export default function Orders({ searchParams }: any) {
   const slug = searchParams.slug;
   const { store, storeId, openSells, loadStore } = useStore(slug);
-  const { orders, getOrders, changeOrderStatus } = useOrders(slug, store);
+  const { orders, getOrders, changeOrderStatus, closeSlotOrders } = useOrders(
+    slug,
+    store
+  );
   const ordersCurrentLength = useRef(0);
   const [hasNewOrder, setHasNewOrder] = useState(false);
-  const [searchFilter, setSearchFilter] = useState("");
+  const [filteredSlot, setFilteredSlot] = useState("");
 
   useEffect(() => {
     if (!storeId || !store) return;
     getOrders(storeId);
   }, [getOrders, store, storeId]);
 
+  const slots = useMemo(() => {
+    if (!orders) return [];
+    const slots = orders.map((order) => order.slot).sort();
+    const uniqueSlots = Array.from(new Set(slots));
+    return uniqueSlots;
+  }, [orders]);
+
   const filteredOrders = useMemo(() => {
     console.log("orders", orders);
     if (!orders) return null;
-    if (searchFilter === "") return orders;
+    if (filteredSlot === "") return orders;
     console.log("new orders");
-    return orders?.filter((order) => order.slot === searchFilter);
-  }, [searchFilter, orders]);
+    return orders?.filter((order) => order.slot === filteredSlot);
+  }, [filteredSlot, orders]);
 
   useEffect(() => {
     // Ignorar a primeira carga
@@ -75,16 +79,32 @@ export default function Orders({ searchParams }: any) {
     await loadStore(storeId);
   };
 
-  const handleSelect = (event: any) => {
-    setSearchFilter(event.target.value);
+  const handleFilteredSlot = (event: any) => {
+    setFilteredSlot(event.target.value);
   };
 
   const handleSelectStatus = async (orderId: string, status: string) => {
     await changeOrderStatus(orderId, status);
   };
 
+  const getSlotLabel = (filteredSlot: string) => {
+    return (
+      filteredSlot.charAt(0)?.toUpperCase() +
+      filteredSlot.slice(1).replace("-", " ")
+    );
+  };
+
+  const handleCloseSlot = async (slot: string) => {
+    const confirmed = confirm(
+      `Todos os pedidos da ${getSlotLabel(slot)} serão removidos.`
+    );
+    if (!confirmed) return;
+    await closeSlotOrders(storeId!, slot);
+    setFilteredSlot("");
+  };
+
   return (
-    <main className="bg-neutral-100 min-h-svh">
+    <main className="bg-neutral-200 min-h-svh">
       <section>
         <header className="grid xl:grid-flow-col xl:auto-cols-auto justify-between items-center px-8 py-4 bg-white border-b border-neutral-300">
           <h1 className="font-medium text-lg">{store?.name} - Pedidos</h1>
@@ -92,12 +112,27 @@ export default function Orders({ searchParams }: any) {
           <div className=" grid grid-flow-col gap-4 w-full text-sm">
             <div className="grid grid-flow-col gap-2 items-center">
               <span className="font-medium">Filtrar por:</span>
-              <select value={searchFilter} onChange={handleSelect}>
+              <select
+                className="border border-black/10 rounded-lg px-2 py-1 font-semibold uppercase"
+                value={filteredSlot}
+                onChange={handleFilteredSlot}
+              >
                 <option value="">Todas mesas</option>
-                <option value="mesa-1">Mesa 1</option>
-                <option value="mesa-2">Mesa 2</option>
-                <option value="mesa-3">Mesa 3</option>
+                {slots.map((slot, index) => (
+                  <option key={index} value={slot}>
+                    {slot.replace("-", " ")}
+                  </option>
+                ))}
               </select>
+              {!!filteredSlot && (
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={() => handleCloseSlot(filteredSlot)}
+                >
+                  Fechar {getSlotLabel(filteredSlot)}
+                </Button>
+              )}
             </div>
             <div className="grid grid-flow-col gap-4 items-center">
               <div>
@@ -109,9 +144,10 @@ export default function Orders({ searchParams }: any) {
               <Button
                 variant="primary"
                 fill="outline"
+                size="small"
                 onClick={handleOpenSells}
               >
-                Abrir o caixa
+                Abrir Novo Caixa
               </Button>
             </div>
           </div>
@@ -130,54 +166,56 @@ export default function Orders({ searchParams }: any) {
             {filteredOrders?.map((order, index) => (
               <article
                 key={order.id}
-                className={`grid gap-4 m-0 p-6 border border-black/10 text-center rounded-xl ${getStatusColor(
+                className={`grid gap-4 m-0 p-6 border border-black/20 shadow-lg text-center rounded-2xl ${getStatusColor(
                   order.status
                 )}`}
+                style={{ alignContent: "start" }}
               >
-                <div className="grid grid-flow-col gap-2 items-center">
-                  <span className="font-medium">Status do pedido:</span>
+                <div className="grid grid-flow-col auto-cols-min gap-2 justify-center items-center">
+                  <div className="font-medium whitespace-nowrap">
+                    Status do pedido:
+                  </div>
                   <select
-                    value={order.status ?? orderStatus.pendent}
+                    className="border border-black/10 rounded-lg px-2 py-1 font-semibold"
+                    value={order.status}
                     onChange={(event) =>
                       handleSelectStatus(order.id, event.target.value)
                     }
                   >
-                    {Object.entries(orderStatus).map(([key, value]) => (
+                    {Object.entries(OrderStatus).map(([key, value]) => (
                       <option key={key} value={value}>
-                        {value}
+                        {OrderStatusLabels[value as never]}
                       </option>
                     ))}
                   </select>
                 </div>
-                <div color="medium" className="text-xl uppercase">
-                  <span className="opacity-70">
+                <div className="grid gap-4 grid-flow-col auto-cols-min justify-evenly uppercase">
+                  <span className="block text-lg opacity-60 whitespace-nowrap">
                     Pedido #{filteredOrders.length - index}
                   </span>
-                  <br />
-                  <span className="font-semibold">
-                    {new Date(order.created).toLocaleString()}
+                  <span className="block text-lg opacity-60 whitespace-nowrap">
+                    {new Date(order.created).toLocaleTimeString()}
+                    {", "}
+                    {new Date(order.created).toLocaleDateString()}
                   </span>
                 </div>
                 <hr className="border-t border-black/20" />
-                <div className="grid gap-2">
-                  <div
-                    color="danger"
-                    className="text-2xl font-semibold uppercase opacity-70"
-                  >
+                <div className="grid gap-1">
+                  <div className="text-2xl text-red-600 font-semibold uppercase">
                     {order.slot?.replace("-", " ")}
                   </div>
-                  {!!order.quantity && (
+                  {/* {!!order.quantity && (
                     <div
                       color="dark"
                       className="text-2xl font-semibold opacity-70"
                     >
                       Qtd: {order.quantity}X
                     </div>
-                  )}
-                  <div
-                    color="dark"
-                    className="text-3xl font-semibold opacity-90"
-                  >
+                  )} */}
+                  <div className="text-2xl font-medium">
+                    {!!order.quantity && (
+                      <span className="font-semibold">{order.quantity}x</span>
+                    )}{" "}
                     {order.product}
                   </div>
                 </div>

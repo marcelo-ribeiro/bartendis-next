@@ -1,12 +1,17 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-let timeout: NodeJS.Timeout;
+
 export const RedirectHome = () => {
+  const router = useRouter();
+
   useEffect(() => {
-    timeout = setTimeout(() => {
-      history.back();
+    const timeout = setTimeout(() => {
+      router.back();
     }, 3000);
+
     return () => clearTimeout(timeout);
-  }, []);
-  return <></>;
+  }, [router]);
+
+  return null;
 };

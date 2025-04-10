@@ -342,14 +342,16 @@ export default function ProductTable({
                   </div>
                 </td>
                 <td className="px-4 py-2 border border-y-slate-200 text-center">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    size="small"
-                    onClick={handleAddProduct}
-                  >
-                    Adicionar produto
-                  </Button>
+                  <div className="flex justify-center">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="small"
+                      onClick={handleAddProduct}
+                    >
+                      Adicionar produto
+                    </Button>
+                  </div>
                 </td>
               </tr>
 
@@ -421,17 +423,17 @@ export default function ProductTable({
                     <div className="flex gap-2 justify-center">
                       <Button
                         size="small"
-                        color="outline"
+                        fill="outline"
                         onClick={() => handleUpdateProduct(index)}
                       >
-                        Salvar Produto
+                        Salvar
                       </Button>
                       <Button
                         size="small"
-                        color="outline"
+                        fill="outline"
                         onClick={() => handleRemoveProduct(index)}
                       >
-                        Excluir Produto
+                        Excluir
                       </Button>
                     </div>
                   </td>

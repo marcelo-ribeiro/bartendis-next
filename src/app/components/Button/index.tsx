@@ -1,33 +1,43 @@
-"use client";
+import { ComponentProps, PropsWithChildren } from "react";
 
-import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+export type ButtonProps = {
+  variant?: "primary" | "accent" | "light" | "clear";
+  size?: "large" | "medium" | "small";
+  fill?: "solid" | "outline";
+  shape?: "square" | "round" | "circle";
+  expand?: "block";
+};
 
 export const Button = ({
   variant = "clear",
   size = "medium",
   fill = "solid",
   shape = "round",
+  expand,
+  className,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> &
-  PropsWithChildren & {
-    variant?: "primary" | "accent" | "light" | "clear";
-    size?: "large" | "medium" | "small";
-    fill?: "solid" | "outline";
-    shape?: "square" | "round" | "circle";
-  }) => {
-  const { className, ...restProps } = props;
+}: ButtonProps & ComponentProps<"button"> & PropsWithChildren) => {
   const baseStyles =
-    "flex items-center justify-center py-2 font-semibold transition duration-300 appearance-none";
+    "flex items-center justify-center font-semibold leading-none transition duration-300 appearance-none";
 
   const sizeStyles = () => {
     switch (size) {
       case "small":
-        return "px-2 text-sm h-8";
-      case "large":
-        return "px-6 text-lg h-12";
+        return "min-h-8 px-4 py-2 text-sm";
       case "medium":
       default:
-        return "px-4 text-sm h-10";
+        return "min-h-10 px-6 py-2 text-sm";
+      case "large":
+        return "min-h-12 px-8 py-2 text-lg";
+    }
+  };
+
+  const expandStyles = () => {
+    switch (expand) {
+      case "block":
+        return "w-full";
+      default:
+        return "";
     }
   };
 
@@ -67,8 +77,8 @@ export const Button = ({
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles()} ${shapeStyles()} ${sizeStyles()} ${className}`}
-      {...restProps}
+      className={`${baseStyles} ${variantStyles()} ${shapeStyles()} ${sizeStyles()} ${expandStyles()} ${className}`}
+      {...props}
     />
   );
 };

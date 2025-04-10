@@ -100,7 +100,7 @@ export async function generateOrder({
   slot,
   product,
   quantity,
-  status = "Pendente",
+  status = "pendent",
 }: {
   storeId: string;
   slot: string;

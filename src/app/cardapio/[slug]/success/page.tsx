@@ -1,6 +1,5 @@
 import { GoBackButton } from "@/app/components/GoBackButton";
 import { LottieAnimation } from "@/app/components/LottieAnimation";
-import { RedirectHome } from "@/app/components/RedirectHome";
 import { generateOrder } from "@/app/services/store";
 
 export default async function Success({
@@ -14,7 +13,8 @@ export default async function Success({
   };
 }) {
   const { storeId, slot, product, quantity } = searchParams;
-  let hasSuccess = false;
+  let error = false;
+  const message = `${quantity ? quantity + "x" : ""} ${product}`;
 
   try {
     await generateOrder({
@@ -22,31 +22,31 @@ export default async function Success({
       slot,
       product,
       quantity: Number(quantity),
-      status: "Pendente"
     });
-    hasSuccess = true;
   } catch {
-    //
+    error = true;
   }
 
   return (
-    <div className="absolute inset-0 z-50 grid place-items-center place-content-center bg-white/90 transition-opacity duration-1000">
-      <LottieAnimation />
-
-      {hasSuccess && (
+    <section className="absolute inset-0 z-50 grid place-items-center place-content-center bg-white/90 transition-opacity duration-1000">
+      {error ? (
         <div className="text-black text-2xl font-bold text-center">
-          <span color="success">Seu pedido foi realizado!</span>
-          <br />
-          {quantity ? quantity + "x" : ""}
-          {product}
+          <h1 className="text-red-600">Seu pedido não foi realizado!</h1>
+          {message}
         </div>
+      ) : (
+        <>
+          <LottieAnimation />
+          <div className="text-black text-2xl font-bold text-center">
+            <h1 className="text-green-600">Seu pedido foi realizado!</h1>
+            {message}
+          </div>
+        </>
       )}
 
       <div className="mt-12">
         <GoBackButton />
       </div>
-
-      <RedirectHome />
-    </div>
+    </section>
   );
 }

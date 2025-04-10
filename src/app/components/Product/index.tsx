@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { TProduct } from "../../hooks/useStore";
 import { Button } from "../Button";
@@ -24,47 +24,31 @@ export const Product = ({
   storeId,
   enableOrder,
 }: ProductProps) => {
-  const { slot } = searchParams;
   const [quantity, setQuantity] = useState(0);
-  // const [presentAlert] = useIonAlert();
-
-  const classCardImageBg = product.image ? "bg-white" : "bg-gray-50";
+  const pathname = usePathname();
 
   const order = {
     storeId,
-    slot: slot!,
+    slot: searchParams.slot,
     product: product.description
       ? `${product.name} - ${product.description}`
       : product.name,
-    quantity,
+    quantity: String(quantity),
   };
-
-  // const handleGenerateOrder = async (order: any) => {
-  //   try {
-  //     await generateOrder(order);
-  //     setTimeout(() => {}, 4000);
-  //   } catch {
-  //     alert(
-  //       "Ocorreu um erro ao gerar o seu pedido. Contate o suporte do estabelecimento."
-  //     );
-  //   }
-  // };
-
-  const handleCounterChange = (value: number) => {
-    console.log("value :", value);
-    setQuantity(value);
-  };
+  const orderParams = new URLSearchParams(order).toString();
+  const link = `${pathname}/success/?${orderParams}`;
 
   const handleSetOrder = () => {
-    if (quantity === 0) {
-      alert("Escolha a quantidade para fazer o pedido.");
-      return false;
-    }
+    alert("Escolha a quantidade para fazer o pedido.");
   };
 
   return (
     <article className="card overflow-hidden rounded-xl bg-white shadow-md">
-      <div className={`card__image w-full aspect-video ${classCardImageBg}`}>
+      <div
+        className={`card__image w-full aspect-video ${
+          product.image ? "bg-white" : "bg-gray-50"
+        }`}
+      >
         {product.image && (
           <Image
             className="w-full h-full object-contain"
@@ -75,41 +59,34 @@ export const Product = ({
           />
         )}
       </div>
-      <header className="card__header py-3 px-3">
-        <p className="card__subtitle text-xs font-medium leading-4 text-stone-600 uppercase mb-1">
+
+      <header className="card__header pt-2 pb-3 px-3">
+        <p className="card__subtitle text-xs font-medium leading-4 text-stone-500 uppercase">
           {Intl.NumberFormat("pt-br", {
             style: "currency",
             currency: "BRL",
           }).format(product.price)}
         </p>
-        <h1 className="card__title min-h-8 text-sm leading-4 font-medium m-0">
+        <h1 className="card__title min-h-8 mt-1 text-sm text-stone-700 leading-4 font-medium">
           {product.name}
         </h1>
-        <p className="card__subtitle min-h-8 mt-1 text-xs leading-4 text-stone-600">
+        <p className="card__subtitle min-h-8 mt-1 text-xs leading-tight text-stone-600">
           {product.description ?? <span>&nbsp;</span>}
         </p>
       </header>
-      {/* <section className="card__content min-h-8 px-4 pb-3 text-xs leading-4 font-base"></section> */}
-      {enableOrder && !!slot && (
+
+      {enableOrder && (
         <footer className="grid gap-3 px-2 pb-2">
           <div className="mx-1">
-            <QuantityCounter
-              onCounterChange={handleCounterChange}
-              counter={quantity}
-            />
+            <QuantityCounter onCounterChange={setQuantity} counter={quantity} />
           </div>
 
           {quantity <= 0 ? (
-            <Button variant="light" onClick={handleSetOrder}>
+            <Button variant="primary" onClick={handleSetOrder}>
               Fazer pedido
             </Button>
           ) : (
-            <Link
-              href={`${location.origin}/${
-                location.pathname
-              }/success/?${new URLSearchParams(order as any).toString()}`}
-              className="grid"
-            >
+            <Link href={link} className="grid">
               <Button variant="primary">Fazer pedido</Button>
             </Link>
           )}

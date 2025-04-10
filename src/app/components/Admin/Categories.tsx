@@ -9,8 +9,7 @@ type CategoryProps = { id: string; name: string };
 export const Categories = () => {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const [newCategory, setNewCategory] = useState("");
-  const searchParams = new URLSearchParams(location.search); // Pegar o ID da loja e categoria da URL
-  // const router = useIonRouter(); // Usado para navegação entre páginas
+  const searchParams = new URLSearchParams(global.location.search); // Pegar o ID da loja e categoria da URL
   const storeId = searchParams.get("storeId");
   const categoryId = searchParams.get("categoryId");
   const slug = searchParams.get("slug");
@@ -33,11 +32,9 @@ export const Categories = () => {
   }, [storeId]);
 
   // Função para lidar com a seleção de uma categoria existente
-  const handleCategorySelect = (e: any) => {
-    const selectedCategoryId = e.target.value;
-    if (selectedCategoryId) {
-      redirect(selectedCategoryId);
-    }
+  const handleCategorySelect = (selectedCategoryId: string) => {
+    if (!selectedCategoryId) return;
+    redirect(selectedCategoryId);
   };
 
   const redirect = (id: string) => {
@@ -67,7 +64,7 @@ export const Categories = () => {
       {/* Select para selecionar uma categoria existente */}
       <select
         value={categoryId || ""}
-        onChange={handleCategorySelect}
+        onChange={(e) => handleCategorySelect(e.target.value)}
         className="px-1 py-1 border border-slate-300 rounded-lg"
       >
         <option value="">Selecione uma categoria</option>

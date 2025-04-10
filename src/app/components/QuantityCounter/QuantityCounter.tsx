@@ -1,27 +1,23 @@
-"use client";
-// import { AddOutline, RemoveOutline } from "react-ionicons";
 import AddOutline from "@/app/assets/icon-add-outline.svg";
 import RemoveOutline from "@/app/assets/icon-remove-outline.svg";
 import Image from "next/image";
 import { Button } from "../Button";
 
 interface QuantityCounterProps {
-  onCounterChange: (value: number) => void;
   counter?: number;
+  onCounterChange: (value: number) => void;
 }
 
 export const QuantityCounter = ({
-  onCounterChange,
   counter = 0,
+  onCounterChange,
 }: QuantityCounterProps) => {
   const increment = () => {
     onCounterChange(counter + 1);
   };
-
   const decrement = () => {
     onCounterChange(counter > 0 ? counter - 1 : 0);
   };
-
   return (
     <div className="grid grid-cols-[2.5rem_auto_2.5rem] gap-1 rounded-md overflow-hidden">
       <Button

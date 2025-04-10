@@ -2,7 +2,9 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -15,13 +17,39 @@ import { firebaseFirestore } from "../libraries/firebase";
 import { StoreProps } from "./useStore";
 import { getDocumentIdBySlug } from "./utils";
 
+// export enum OrderStatus {
+//   pendent,
+//   started,
+//   done,
+//   canceled,
+// }
+
+export enum OrderStatus {
+  PENDENT = "pendent",
+  STARTED = "started",
+  DONE = "done",
+  CANCELED = "canceled",
+}
+
+console.log("OrderStatus:", OrderStatus);
+Object.entries(OrderStatus).map(([key, value]) => {
+  console.log(`Key: ${key}, Value: ${value}`);
+});
+
+export const OrderStatusLabels = {
+  [OrderStatus.PENDENT]: "Pendente",
+  [OrderStatus.STARTED]: "Preparando",
+  [OrderStatus.DONE]: "Finalizado",
+  [OrderStatus.CANCELED]: "Cancelado",
+};
+
 export type TOrder = {
   id: string;
   created: string;
   slot: string;
   product: string;
   quantity: number;
-  status: string;
+  status: OrderStatus;
 };
 
 export const useOrders = (slug: string | null, store: StoreProps | null) => {
@@ -60,7 +88,7 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
       slot,
       product,
       quantity,
-      status
+      status,
     });
     console.log("docRef :", docRef);
   }
@@ -103,6 +131,21 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
     await updateDoc(docRef, { status });
   }
 
+  const closeSlotOrders = useCallback(async (storeId: string, slot: string) => {
+    if (!storeId) return;
+    const ordersRef = collection(
+      firebaseFirestore,
+      `stores`,
+      storeId,
+      "orders"
+    );
+    const querySnapshot = query(ordersRef, where("slot", "==", slot));
+    const snapshot = await getDocs(querySnapshot);
+    snapshot.forEach(async (doc: any) => {
+      await deleteDoc(doc.ref);
+    });
+  }, []);
+
   useEffect(() => {
     if (!slug || !store) return;
     if (!!orders) return;
@@ -117,5 +160,6 @@ export const useOrders = (slug: string | null, store: StoreProps | null) => {
     orders,
     changeOrderStatus,
     getOrders,
+    closeSlotOrders,
   };
 };

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-async-client-component */
-
 import Logo from "@/app/assets/logotipo-prime-delicatessen.jpeg";
 import CallBartenderButton from "@/app/components/CallBartenderButton";
 import { Product } from "@/app/components/Product";
@@ -28,7 +25,7 @@ export default async function Cardapio({
 
   const store = await loadStore(storeId);
   const menu = await getMenu(storeId);
-  const enableOrder = false;
+  const enableOrder = true;
 
   return (
     <main>
