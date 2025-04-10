@@ -17,13 +17,6 @@ import { firebaseFirestore } from "../libraries/firebase";
 import { StoreProps } from "./useStore";
 import { getDocumentIdBySlug } from "./utils";
 
-// export enum OrderStatus {
-//   pendent,
-//   started,
-//   done,
-//   canceled,
-// }
-
 export enum OrderStatus {
   PENDENT = "pendent",
   STARTED = "started",
@@ -31,12 +24,7 @@ export enum OrderStatus {
   CANCELED = "canceled",
 }
 
-console.log("OrderStatus:", OrderStatus);
-Object.entries(OrderStatus).map(([key, value]) => {
-  console.log(`Key: ${key}, Value: ${value}`);
-});
-
-export const OrderStatusLabels = {
+export const OrderStatusLabels: Record<OrderStatus, string> = {
   [OrderStatus.PENDENT]: "Pendente",
   [OrderStatus.STARTED]: "Preparando",
   [OrderStatus.DONE]: "Finalizado",

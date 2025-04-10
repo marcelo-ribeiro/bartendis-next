@@ -26,9 +26,9 @@ export const Button = ({
         return "min-h-8 px-4 py-2 text-sm";
       case "medium":
       default:
-        return "min-h-10 px-6 py-2 text-sm";
+        return "min-h-10 px-4 py-2 text-sm";
       case "large":
-        return "min-h-12 px-8 py-2 text-lg";
+        return "min-h-12 px-6 py-2 text-lg";
     }
   };
 

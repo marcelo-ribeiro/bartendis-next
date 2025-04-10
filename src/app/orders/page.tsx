@@ -7,11 +7,10 @@ import { useStore } from "../hooks/useStore";
 import "./style.css";
 
 const getStatusColor = (status: OrderStatus) => {
-  console.log("status :", status);
   const statusColor = {
     [OrderStatus.PENDENT]: "bg-white",
-    [OrderStatus.STARTED]: "bg-yellow-200",
-    [OrderStatus.DONE]: "bg-green-200",
+    [OrderStatus.STARTED]: "bg-amber-200",
+    [OrderStatus.DONE]: "bg-emerald-200",
     [OrderStatus.CANCELED]: "bg-red-200",
   };
   return statusColor[status] ?? statusColor[OrderStatus.PENDENT];
@@ -106,50 +105,41 @@ export default function Orders({ searchParams }: any) {
   return (
     <main className="bg-neutral-200 min-h-svh">
       <section>
-        <header className="grid xl:grid-flow-col xl:auto-cols-auto justify-between items-center px-8 py-4 bg-white border-b border-neutral-300">
+        <header className="grid lg:grid-cols-2 justify-between items-center gap-4 px-8 py-4 bg-white border-b border-neutral-300">
           <h1 className="font-medium text-lg">{store?.name} - Pedidos</h1>
 
-          <div className=" grid grid-flow-col gap-4 w-full text-sm">
-            <div className="grid grid-flow-col gap-2 items-center">
-              <span className="font-medium">Filtrar por:</span>
-              <select
-                className="border border-black/10 rounded-lg px-2 py-1 font-semibold uppercase"
-                value={filteredSlot}
-                onChange={handleFilteredSlot}
-              >
-                <option value="">Todas mesas</option>
-                {slots.map((slot, index) => (
-                  <option key={index} value={slot}>
-                    {slot.replace("-", " ")}
-                  </option>
-                ))}
-              </select>
-              {!!filteredSlot && (
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={() => handleCloseSlot(filteredSlot)}
-                >
-                  Fechar {getSlotLabel(filteredSlot)}
-                </Button>
-              )}
+          <div className="grid grid-flow-col gap-4 items-center lg:justify-end">
+            <div>
+              <span className="font-medium">Aberto às: </span>
+              {store ? new Date(store.openAt.toMillis()!).toLocaleString() : ""}
             </div>
-            <div className="grid grid-flow-col gap-4 items-center">
-              <div>
-                <span className="font-medium">Aberto às: </span>
-                {store
-                  ? new Date(store.openAt.toMillis()!).toLocaleString()
-                  : ""}
-              </div>
+            <Button variant="primary" fill="outline" onClick={handleOpenSells}>
+              Abrir Novo Caixa
+            </Button>
+          </div>
+
+          <div className="grid grid-flow-col gap-2 items-center justify-start">
+            <span className="font-medium">Filtrar por:</span>
+            <select
+              className="h-10 border border-black/10 rounded-lg px-2 py-1 font-semibold uppercase"
+              value={filteredSlot}
+              onChange={handleFilteredSlot}
+            >
+              <option value="">Todas mesas</option>
+              {slots.map((slot, index) => (
+                <option key={index} value={slot}>
+                  {slot.replace("-", " ")}
+                </option>
+              ))}
+            </select>
+            {!!filteredSlot && (
               <Button
                 variant="primary"
-                fill="outline"
-                size="small"
-                onClick={handleOpenSells}
+                onClick={() => handleCloseSlot(filteredSlot)}
               >
-                Abrir Novo Caixa
+                Fechar {getSlotLabel(filteredSlot)}
               </Button>
-            </div>
+            )}
           </div>
         </header>
 
@@ -166,17 +156,28 @@ export default function Orders({ searchParams }: any) {
             {filteredOrders?.map((order, index) => (
               <article
                 key={order.id}
-                className={`grid gap-4 m-0 p-6 border border-black/20 shadow-lg text-center rounded-2xl ${getStatusColor(
+                className={`grid gap-3 m-0 px-6 py-6 border border-black/20 shadow-lg text-center rounded-2xl ${getStatusColor(
                   order.status
                 )}`}
                 style={{ alignContent: "start" }}
               >
-                <div className="grid grid-flow-col auto-cols-min gap-2 justify-center items-center">
+                <div className="grid gap-4 grid-flow-col auto-cols-min justify-evenly uppercase text-base font-medium opacity-70">
+                  <span className="whitespace-nowrap">
+                    Pedido #{filteredOrders.length - index}
+                  </span>
+                  <span className="whitespace-nowrap">
+                    {new Date(order.created).toLocaleTimeString()}
+                    {", "}
+                    {new Date(order.created).toLocaleDateString()}
+                  </span>
+                </div>
+                <hr className="border-t border-black/10" />
+                <div className="grid grid-flow-col auto-cols-min gap-3 justify-center items-center">
                   <div className="font-medium whitespace-nowrap">
-                    Status do pedido:
+                    Status do Pedido:
                   </div>
                   <select
-                    className="border border-black/10 rounded-lg px-2 py-1 font-semibold"
+                    className="h-10 bg-transparent border border-black/20 rounded-lg px-2 py-1 font-semibold"
                     value={order.status}
                     onChange={(event) =>
                       handleSelectStatus(order.id, event.target.value)
@@ -189,30 +190,12 @@ export default function Orders({ searchParams }: any) {
                     ))}
                   </select>
                 </div>
-                <div className="grid gap-4 grid-flow-col auto-cols-min justify-evenly uppercase">
-                  <span className="block text-lg opacity-60 whitespace-nowrap">
-                    Pedido #{filteredOrders.length - index}
-                  </span>
-                  <span className="block text-lg opacity-60 whitespace-nowrap">
-                    {new Date(order.created).toLocaleTimeString()}
-                    {", "}
-                    {new Date(order.created).toLocaleDateString()}
-                  </span>
-                </div>
-                <hr className="border-t border-black/20" />
+                <hr className="border-t border-black/10" />
                 <div className="grid gap-1">
-                  <div className="text-2xl text-red-600 font-semibold uppercase">
+                  <div className="text-2xl text-red-600 font-bold uppercase">
                     {order.slot?.replace("-", " ")}
                   </div>
-                  {/* {!!order.quantity && (
-                    <div
-                      color="dark"
-                      className="text-2xl font-semibold opacity-70"
-                    >
-                      Qtd: {order.quantity}X
-                    </div>
-                  )} */}
-                  <div className="text-2xl font-medium">
+                  <div className="text-xl font-medium">
                     {!!order.quantity && (
                       <span className="font-semibold">{order.quantity}x</span>
                     )}{" "}
