@@ -25,13 +25,13 @@ export default async function Cardapio({
 
   const store = await loadStore(storeId);
   const menu = await getMenu(storeId);
-  const enableOrder = true;
+  const enableOrder = !!slot;
 
   return (
     <main>
-      <header className="sticky top-0 z-30 grid w-full h-12 bg-white/80 border-b border-stone-200 backdrop-blur-md">
-        <nav className="grid justify-items-center items-center h-12">
-          <h1 className="font-semibold text-lg">{store?.name}</h1>
+      <header className="sticky top-0 z-30 grid w-full h-10 bg-white border-b border-black/10">
+        <nav className="grid justify-items-center items-center">
+          <h1 className="font-semibold text-base">{store?.name}</h1>
         </nav>
       </header>
 
@@ -46,7 +46,7 @@ export default async function Cardapio({
               />
             </div>
             <div className="text-center font-base font-medium px-6">
-              Olá! Conheça nosso <b>cardápio</b>
+              Olá! Conheça nosso cardápio
             </div>
           </nav>
         </header>

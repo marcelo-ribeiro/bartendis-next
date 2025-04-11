@@ -19,27 +19,37 @@ export const QuantityCounter = ({
     onCounterChange(counter > 0 ? counter - 1 : 0);
   };
   return (
-    <div className="grid grid-cols-[2.5rem_auto_2.5rem] gap-1 rounded-md overflow-hidden">
+    <div className="grid grid-cols-[3rem_auto_3rem] gap-1 rounded-lg overflow-hidden border border-stone-300">
       <Button
         style={{ padding: 0 }}
         size="small"
-        fill="outline"
         shape="round"
         onClick={decrement}
       >
-        <Image src={RemoveOutline} alt="adicionar" width={20} height={20} />
+        <Image
+          className="opacity-80"
+          src={RemoveOutline}
+          alt="adicionar"
+          width={20}
+          height={20}
+        />
       </Button>
-      <div className="flex items-center justify-center text-center text-sm rounded-lg bg-neutral-100 font-medium">
+      <div className="flex items-center justify-center text-center text-sm text-black/60 rounded-md font-medium">
         {counter}
       </div>
       <Button
         style={{ padding: 0 }}
         size="small"
-        fill="outline"
         shape="round"
         onClick={increment}
       >
-        <Image src={AddOutline} alt="adicionar" width={20} height={20} />
+        <Image
+          className="opacity-80"
+          src={AddOutline}
+          alt="adicionar"
+          width={20}
+          height={20}
+        />
       </Button>
     </div>
   );

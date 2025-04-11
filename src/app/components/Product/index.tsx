@@ -44,39 +44,41 @@ export const Product = ({
 
   return (
     <article className="card overflow-hidden rounded-xl bg-white shadow-md">
-      <div
-        className={`card__image w-full aspect-video ${
+      <figure
+        className={`card__image w-full aspect-video px-2 pt-2 ${
           product.image ? "bg-white" : "bg-gray-50"
         }`}
       >
         {product.image && (
           <Image
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain rounded-lg bg-gray-50"
             alt={product.name}
             src={product.image}
             width={160}
             height={90}
           />
         )}
-      </div>
+      </figure>
 
-      <header className="card__header pt-2 pb-3 px-3">
-        <p className="card__subtitle text-xs font-medium leading-4 text-stone-500 uppercase">
+      <header className="card__header grid gap-1 pt-2 pb-3 px-3">
+        <p className="card__subtitle text-xs font-medium leading-tight text-stone-400 uppercase">
           {Intl.NumberFormat("pt-br", {
             style: "currency",
             currency: "BRL",
           }).format(product.price)}
         </p>
-        <h1 className="card__title min-h-8 mt-1 text-sm text-stone-700 leading-4 font-medium">
+        <h1 className="card__title max-h-12 overflow-hidden text-sm text-stone-700 leading-4 font-medium">
           {product.name}
         </h1>
-        <p className="card__subtitle min-h-8 mt-1 text-xs leading-tight text-stone-600">
-          {product.description ?? <span>&nbsp;</span>}
-        </p>
+        {!!product.description && (
+          <p className="card__subtitle max-h-12 overflow-hidden text-xs leading-tight text-stone-600">
+            {product.description}
+          </p>
+        )}
       </header>
 
       {enableOrder && (
-        <footer className="grid gap-3 px-2 pb-2">
+        <footer className="grid gap-2 px-2 pb-2">
           <div className="mx-1">
             <QuantityCounter onCounterChange={setQuantity} counter={quantity} />
           </div>
