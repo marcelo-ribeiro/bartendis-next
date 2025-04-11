@@ -29,7 +29,6 @@ export default function CallBartenderButton({
     <Link
       className="grid"
       href={`${pathname}/success/?${new URLSearchParams(order).toString()}`}
-      prefetch
     >
       <Button variant="accent" size="large" shape="square" expand="block">
         <div className="flex gap-2 items-center">
