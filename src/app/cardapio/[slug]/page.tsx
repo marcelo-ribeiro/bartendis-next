@@ -10,19 +10,17 @@ import {
 import Image from "next/image";
 import "../style.css";
 
-export default async function Cardapio({
-  searchParams,
-  params,
-}: {
-  searchParams: { slot: string };
-  params: { slug: string };
+export default async function Cardapio(props: {
+  searchParams: Promise<{ slot: string }>;
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const { slug } = params;
-  const { slot } = searchParams;
   const storeId = await getDocumentIdBySlug(slug);
-
   if (!storeId) return <div>Essa loja não existe</div>;
 
+  const searchParams = await props.searchParams;
+  const { slot } = searchParams;
   const store = await loadStore(storeId);
   const menu = await getMenu(storeId);
   const enableOrder = !!slot;
@@ -69,9 +67,8 @@ export default async function Cardapio({
                   </div>
 
                   <div className="products scroll-horizontal grid grid-flow-col auto-cols-[10rem] gap-3 px-6 py-3 overflow-x-auto">
-                    {!!products &&
-                      Array.isArray(products) &&
-                      [...products].map((product) => (
+                    {Array.isArray(products) &&
+                      products.map((product) => (
                         <div key={product.id}>
                           <Product
                             product={product}

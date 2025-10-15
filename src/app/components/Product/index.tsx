@@ -79,7 +79,7 @@ export const Product = ({
 
       {enableOrder && (
         <footer className="grid gap-2 px-2 pb-2">
-          <div className="mx-1">
+          <div>
             <QuantityCounter onCounterChange={setQuantity} counter={quantity} />
           </div>
 

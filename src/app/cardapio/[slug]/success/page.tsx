@@ -2,16 +2,17 @@ import { GoBackButton } from "@/app/components/GoBackButton";
 import { LottieAnimation } from "@/app/components/LottieAnimation";
 import { generateOrder } from "@/app/services/store";
 
-export default async function Success({
-  searchParams,
-}: {
-  searchParams: {
-    storeId: string;
-    product: string;
-    slot: string;
-    quantity: string;
-  };
-}) {
+export default async function Success(
+  props: {
+    searchParams: Promise<{
+      storeId: string;
+      product: string;
+      slot: string;
+      quantity: string;
+    }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { storeId, slot, product, quantity } = searchParams;
   let error = false;
   const message = `${quantity ? quantity + "x" : ""} ${product}`;

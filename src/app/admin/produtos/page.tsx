@@ -19,20 +19,21 @@ import {
   uploadBytes,
 } from "firebase/storage"; // Adicionar funções de storage
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Categories } from "../../components/Admin/Categories";
 import { TProduct } from "../../hooks/useStore";
 import { firebaseFirestore, firebaseStorage } from "../../libraries/firebase";
 
-export default function ProductTable({
-  searchParams,
-}: {
-  searchParams: {
-    storeId: string;
-    categoryId: string;
-    slug: string;
-  };
-}) {
+export default function ProductTable(
+  props: {
+    searchParams: Promise<{
+      storeId: string;
+      categoryId: string;
+      slug: string;
+    }>;
+  }
+) {
+  const searchParams = use(props.searchParams);
   const [products, setProducts] = useState<TProduct[]>([]);
   const [newProduct, setNewProduct] = useState<TProduct>({
     name: "",

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, use } from "react";
 import { Button } from "../components/Button";
 import { OrderStatus, OrderStatusLabels, useOrders } from "../hooks/useOrders";
 import { useStore } from "../hooks/useStore";
@@ -16,7 +16,10 @@ const getStatusColor = (status: OrderStatus) => {
   return statusColor[status] ?? statusColor[OrderStatus.PENDENT];
 };
 
-export default function Orders({ searchParams }: any) {
+export default function Orders(props: {
+  searchParams: Promise<{ slug: string }>;
+}) {
+  const searchParams = use(props.searchParams);
   const slug = searchParams.slug;
   const { store, storeId, openSells, loadStore } = useStore(slug);
   const { orders, getOrders, changeOrderStatus, closeSlotOrders } = useOrders(
