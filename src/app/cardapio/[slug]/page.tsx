@@ -1,6 +1,6 @@
 import Logo from "@/app/assets/logotipo-prime-delicatessen.jpeg";
 import CallBartenderButton from "@/app/components/CallBartenderButton";
-import { Product } from "@/app/components/Product";
+import { CardapioClient } from "./CardapioClient";
 import {
   getDocumentIdBySlug,
   getMenu,
@@ -49,52 +49,13 @@ export default async function Cardapio(props: {
           </nav>
         </header>
 
-        <section
-          id="menuList"
-          className="grid pt-4 pb-8 bg-gray-100 rounded-t-3xl"
-        >
-          {!!menu &&
-            Object.entries(menu)?.map(([categorieName, products], index) => {
-              if (Array.isArray(products) && !products.length) {
-                return <div key={index}></div>;
-              }
-              return (
-                <div key={index} className="relative grid pt-4">
-                  <div className="category px-6 text-xl font-semibold">
-                    <span className="pl-1" color="dark">
-                      {categorieName}
-                    </span>
-                  </div>
-
-                  <div className="products scroll-horizontal grid grid-flow-col auto-cols-[10rem] gap-3 px-6 py-3 overflow-x-auto">
-                    {Array.isArray(products) &&
-                      products.map((product) => (
-                        <div key={product.id}>
-                          <Product
-                            product={product}
-                            searchParams={{ slug, slot }}
-                            storeId={storeId!}
-                            enableOrder={enableOrder}
-                          />
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              );
-            })}
-        </section>
+        <CardapioClient
+          menu={menu}
+          storeId={storeId}
+          searchParams={{ slug, slot }}
+          enableOrder={enableOrder}
+        />
       </section>
-
-      {enableOrder && (
-        <footer className="sticky bottom-0">
-          <nav>
-            <CallBartenderButton
-              searchParams={searchParams}
-              storeId={storeId!}
-            />
-          </nav>
-        </footer>
-      )}
     </main>
   );
 }

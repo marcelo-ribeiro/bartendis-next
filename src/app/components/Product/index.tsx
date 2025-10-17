@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { TProduct } from "../../hooks/useStore";
+import { OrderData } from "../../hooks/useOrderSubmission";
 import { Button } from "../Button";
 import { QuantityCounter } from "../QuantityCounter/QuantityCounter";
 
@@ -16,6 +15,7 @@ type ProductProps = {
     slug: string;
   };
   enableOrder?: boolean;
+  onOrderSubmit?: (orderData: OrderData) => Promise<void>;
 };
 
 export const Product = ({
@@ -23,23 +23,37 @@ export const Product = ({
   searchParams,
   storeId,
   enableOrder,
+  onOrderSubmit,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState(0);
-  const pathname = usePathname();
-
-  const order = {
-    storeId,
-    slot: searchParams.slot,
-    product: product.description
-      ? `${product.name} - ${product.description}`
-      : product.name,
-    quantity: String(quantity),
-  };
-  const orderParams = new URLSearchParams(order).toString();
-  const link = `${pathname}/success/?${orderParams}`;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSetOrder = () => {
     alert("Escolha a quantidade para fazer o pedido.");
+  };
+
+  const handleSubmitOrder = async () => {
+    if (!onOrderSubmit || quantity <= 0) return;
+
+    setIsSubmitting(true);
+
+    const orderData: OrderData = {
+      storeId,
+      slot: searchParams.slot,
+      product: product.description
+        ? `${product.name} - ${product.description}`
+        : product.name,
+      quantity,
+    };
+
+    try {
+      await onOrderSubmit(orderData);
+      setQuantity(0); // Reset quantity after successful order
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,9 +102,13 @@ export const Product = ({
               Fazer pedido
             </Button>
           ) : (
-            <Link href={link} className="grid">
-              <Button variant="primary">Fazer pedido</Button>
-            </Link>
+            <Button
+              variant="primary"
+              onClick={handleSubmitOrder}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Enviando..." : "Fazer pedido"}
+            </Button>
           )}
         </footer>
       )}

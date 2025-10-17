@@ -2,40 +2,44 @@
 
 import MegaphoneOutline from "@/app/assets/icon-megaphone-outline.svg";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Button } from "./Button";
 
 export default function CallBartenderButton({
-  searchParams,
-  storeId,
+  onCallBartender,
 }: {
-  storeId: string;
-  searchParams: {
-    slot: string;
-  };
-  props?: never;
+  onCallBartender: () => Promise<void>;
 }) {
-  const pathname = usePathname();
-  const { slot } = searchParams;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const order = {
-    storeId,
-    slot: slot!,
-    product: `Chamando o garçom`,
+  const handleClick = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      await onCallBartender();
+    } catch (error) {
+      console.error("Error calling bartender:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <Link
-      className="grid"
-      href={`${pathname}/success/?${new URLSearchParams(order).toString()}`}
+    <Button
+      variant="accent"
+      size="large"
+      shape="square"
+      expand="block"
+      onClick={handleClick}
+      disabled={isSubmitting}
     >
-      <Button variant="accent" size="large" shape="square" expand="block">
-        <div className="flex gap-2 items-center">
-          <Image src={MegaphoneOutline} alt="icon" width={24} height={24} />
-          <span className="uppercase">Chamar o garçom</span>
-        </div>
-      </Button>
-    </Link>
+      <div className="flex gap-2 items-center">
+        <Image src={MegaphoneOutline} alt="icon" width={24} height={24} />
+        <span className="uppercase">
+          {isSubmitting ? "Chamando..." : "Chamar o garçom"}
+        </span>
+      </div>
+    </Button>
   );
 }
